@@ -1,0 +1,40 @@
+{
+	"name": "scroll-lock",
+	"version": "1.0.0",
+	"description": "A Javascript utility library for working with native scrollbar. Also preventing scroll in iOS and another touch devices.",
+	"main": "dist/scroll-lock.js",
+	"scripts": {
+	  "dev": "cross-env NODE_ENV=development webpack",
+	  "prod": "cross-env NODE_ENV=production webpack"
+	},
+	"repository": {
+	  "type": "git",
+	  "url": "git+https://github.com/FL3NKEY/scroll-lock.git"
+	},
+	"keywords": [
+	  "scroll",
+	  "scrollbar",
+	  "ios",
+	  "lock scroll",
+	  "disable scroll",
+	  "modal",
+	  "mobile",
+	  "overflow"
+	],
+	"author": "FL3N",
+	"license": "MIT",
+	"bugs": {
+	  "url": "https://github.com/FL3NKEY/scroll-lock/issues"
+	},
+	"homepage": "https://github.com/FL3NKEY/fscroll-lock#readme",
+	"devDependencies": {
+	  "babel-core": "^6.26.0",
+	  "babel-loader": "^7.1.4",
+	  "babel-preset-es2015": "^6.24.1",
+	  "babel-preset-stage-2": "^6.24.1",
+	  "browser-sync": "^2.23.6",
+	  "browser-sync-webpack-plugin": "^2.2.2",
+	  "cross-env": "^5.1.4",
+	  "webpack": "^3.10.0"
+	}
+  }
