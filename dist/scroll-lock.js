@@ -88,7 +88,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FILLGUP_CLASSNAME = 'sl--fillgup';
+var FILLGAP_CLASSNAME = 'sl--fillgap';
 var SCROLLABLE_CLASSNAME = 'sl--scrollable';
 var PREVENT_SCROLL_DATASET = 'slPrevented';
 var DELTA_DATASET = 'slDelta';
@@ -185,9 +185,9 @@ var ScrollLock = function () {
 		_classCallCheck(this, ScrollLock);
 
 		this._state = true;
-		this._fillGupAvailableMethods = ['padding', 'margin', 'width'];
-		this._fillGupMethod = this._fillGupAvailableMethods[0];
-		this._fillGupSelectors = ['body', '.' + FILLGUP_CLASSNAME];
+		this._fillGapAvailableMethods = ['padding', 'margin', 'width'];
+		this._fillGapMethod = this._fillGapAvailableMethods[0];
+		this._fillGapSelectors = ['body', '.' + FILLGAP_CLASSNAME];
 
 		bindEvents(this);
 	}
@@ -200,7 +200,7 @@ var ScrollLock = function () {
 	}, {
 		key: 'hide',
 		value: function hide() {
-			this._fillGups();
+			this._fillGaps();
 			document.body.style.overflow = 'hidden';
 			this._state = false;
 
@@ -210,7 +210,7 @@ var ScrollLock = function () {
 		key: 'show',
 		value: function show() {
 			document.body.style.overflow = '';
-			this._unfillGups();
+			this._unfillGaps();
 			this._state = true;
 
 			return this;
@@ -245,11 +245,11 @@ var ScrollLock = function () {
 			return currentWidth;
 		}
 	}, {
-		key: 'setFillGupMethod',
-		value: function setFillGupMethod(method) {
+		key: 'setFillGapMethod',
+		value: function setFillGapMethod(method) {
 			var parsedMethod = method.toLowerCase();
-			if (this._fillGupAvailableMethods.includes(parsedMethod)) {
-				this._fillGupMethod = parsedMethod;
+			if (this._fillGapAvailableMethods.includes(parsedMethod)) {
+				this._fillGapMethod = parsedMethod;
 			} else {
 				throwError('"' + method + '" method is not available!');
 			}
@@ -257,30 +257,30 @@ var ScrollLock = function () {
 			return this;
 		}
 	}, {
-		key: 'setFillGupSelectors',
-		value: function setFillGupSelectors(selectors) {
+		key: 'setFillGapSelectors',
+		value: function setFillGapSelectors(selectors) {
 			if (Array.isArray(selectors)) {
-				selectors.push('.' + FILLGUP_CLASSNAME);
-				this._fillGupSelectors = selectors;
+				selectors.push('.' + FILLGAP_CLASSNAME);
+				this._fillGapSelectors = selectors;
 			} else {
-				throwError('setFillGupSelectors accepts only array!');
+				throwError('setFillGapSelectors accepts only array!');
 			}
 
 			return this;
 		}
 	}, {
-		key: '_fillGups',
-		value: function _fillGups() {
+		key: '_fillGaps',
+		value: function _fillGaps() {
 			var _this = this;
 
-			var selector = generateSelector(this._fillGupSelectors);
+			var selector = generateSelector(this._fillGapSelectors);
 			var currentWidth = this.getCurrentWidth();
 			var elements = document.querySelectorAll(selector);
 
 			eachNode(elements, function (element) {
-				if (_this._fillGupMethod === 'margin') {
+				if (_this._fillGapMethod === 'margin') {
 					element.style.marginRight = currentWidth + 'px';
-				} else if (_this._fillGupMethod === 'width') {
+				} else if (_this._fillGapMethod === 'width') {
 					element.style.width = 'calc(100% - ' + currentWidth + 'px)';
 				} else {
 					element.style.paddingRight = currentWidth + 'px';
@@ -288,9 +288,9 @@ var ScrollLock = function () {
 			});
 		}
 	}, {
-		key: '_unfillGups',
-		value: function _unfillGups() {
-			var selector = generateSelector(this._fillGupSelectors);
+		key: '_unfillGaps',
+		value: function _unfillGaps() {
+			var selector = generateSelector(this._fillGapSelectors);
 			var elements = document.querySelectorAll(selector);
 
 			eachNode(elements, function (element) {

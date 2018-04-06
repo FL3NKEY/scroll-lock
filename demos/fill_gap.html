@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>scroll-lock fill gup</title>
+	<title>scroll-lock fill gap</title>
 	<style>
 		* {
 			box-sizing: border-box;
@@ -62,7 +62,7 @@
 	</style>
 </head>
 <body>
-	<div class="nav sl--fillgup">position fixed element</div>
+	<div class="nav sl--fillgap">position fixed element</div>
 	<div class="container">
 		<h1>Scroll this container!</h1>
 		<button id="openmodal">Open Modal</button>
@@ -93,7 +93,7 @@
 		$modal = document.getElementById('modal');
 
 		scrollLock
-		.setFillGupMethod('width');
+		.setFillGapMethod('width');
 
 		function open() {
 			scrollLock.hide();

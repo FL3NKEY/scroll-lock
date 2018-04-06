@@ -1,4 +1,4 @@
-const FILLGUP_CLASSNAME = 'sl--fillgup';
+const FILLGAP_CLASSNAME = 'sl--fillgap';
 const SCROLLABLE_CLASSNAME = 'sl--scrollable';
 const PREVENT_SCROLL_DATASET = 'slPrevented';
 const DELTA_DATASET = 'slDelta';
@@ -87,9 +87,9 @@ const throwError = (message) => {
 class ScrollLock {
 	constructor() {
 		this._state = true;
-		this._fillGupAvailableMethods = ['padding', 'margin', 'width'];
-		this._fillGupMethod = this._fillGupAvailableMethods[0];
-		this._fillGupSelectors = ['body', `.${FILLGUP_CLASSNAME}`];
+		this._fillGapAvailableMethods = ['padding', 'margin', 'width'];
+		this._fillGapMethod = this._fillGapAvailableMethods[0];
+		this._fillGapSelectors = ['body', `.${FILLGAP_CLASSNAME}`];
 
 		bindEvents(this);
 	}
@@ -99,7 +99,7 @@ class ScrollLock {
 	}
 
 	hide() {
-		this._fillGups();
+		this._fillGaps();
 		document.body.style.overflow = 'hidden';
 		this._state = false;
 
@@ -108,7 +108,7 @@ class ScrollLock {
 
 	show() {
 		document.body.style.overflow = '';
-		this._unfillGups();
+		this._unfillGaps();
 		this._state = true;
 
 		return this;
@@ -140,10 +140,10 @@ class ScrollLock {
 		return currentWidth;
 	}
 
-	setFillGupMethod(method) {
+	setFillGapMethod(method) {
 		const parsedMethod = method.toLowerCase();
-		if (this._fillGupAvailableMethods.includes(parsedMethod)) {
-			this._fillGupMethod = parsedMethod;
+		if (this._fillGapAvailableMethods.includes(parsedMethod)) {
+			this._fillGapMethod = parsedMethod;
 		} else {
 			throwError(`"${method}" method is not available!`);
 		}
@@ -151,26 +151,26 @@ class ScrollLock {
 		return this;
 	}
 
-	setFillGupSelectors(selectors) {
+	setFillGapSelectors(selectors) {
 		if (Array.isArray(selectors)) {
-			selectors.push(`.${FILLGUP_CLASSNAME}`);
-			this._fillGupSelectors = selectors;
+			selectors.push(`.${FILLGAP_CLASSNAME}`);
+			this._fillGapSelectors = selectors;
 		} else {
-			throwError('setFillGupSelectors accepts only array!');
+			throwError('setFillGapSelectors accepts only array!');
 		}
 
 		return this;
 	}
 
-	_fillGups() {
-		const selector = generateSelector(this._fillGupSelectors);
+	_fillGaps() {
+		const selector = generateSelector(this._fillGapSelectors);
 		const currentWidth = this.getCurrentWidth();
 		const elements = document.querySelectorAll(selector);
 
 		eachNode(elements, (element) => {
-			if (this._fillGupMethod === 'margin') {
+			if (this._fillGapMethod === 'margin') {
 				element.style.marginRight = `${currentWidth}px`;
-			} else if (this._fillGupMethod === 'width') {
+			} else if (this._fillGapMethod === 'width') {
 				element.style.width = `calc(100% - ${currentWidth}px)`;
 			} else {
 				element.style.paddingRight = `${currentWidth}px`;
@@ -178,8 +178,8 @@ class ScrollLock {
 		});
 	}
 
-	_unfillGups() {
-		const selector = generateSelector(this._fillGupSelectors);
+	_unfillGaps() {
+		const selector = generateSelector(this._fillGapSelectors);
 		const elements = document.querySelectorAll(selector);
 
 		eachNode(elements, (element) => {
