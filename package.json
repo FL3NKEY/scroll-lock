@@ -26,7 +26,7 @@
 	"bugs": {
 	  "url": "https://github.com/FL3NKEY/scroll-lock/issues"
 	},
-	"homepage": "https://github.com/FL3NKEY/fscroll-lock#readme",
+	"homepage": "https://github.com/FL3NKEY/scroll-lock#readme",
 	"devDependencies": {
 	  "babel-core": "^6.26.0",
 	  "babel-loader": "^7.1.4",
