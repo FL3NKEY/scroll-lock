@@ -44,7 +44,7 @@ But this dont work for `position: fixed;` element, use `sl--fillgup` for handlin
 ```html
 <body style="overflow: hidden; padding-right: ${sroll-width};"></body>
 ```
-Also, [you can change fill gup method](#setfillgupmethod)!
+Also, [you can change fill gup method](#setfillgupmethodmethod)!
 
 ![Image from javascript.info](https://javascript.info/article/size-and-scroll/metric-css.png)
 
