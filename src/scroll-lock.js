@@ -1,3 +1,4 @@
+const FILLGUP_CLASSNAME = 'sl--fillgup';
 const SCROLLABLE_CLASSNAME = 'sl--scrollable';
 const PREVENT_SCROLL_DATASET = 'slPrevented';
 const DELTA_DATASET = 'slDelta';
@@ -50,6 +51,8 @@ const touchmoveEventHandler = (e, scrollLock) => {
 					}
 				}
 			}
+		} else {
+			e.preventDefault();
 		}
 	}
 };
@@ -67,27 +70,48 @@ const bindEvents = (scrollLock) => {
 	document.addEventListener('touchend', (e) => touchendEventHandler(e, scrollLock));
 };
 
+const generateSelector = (selectors) => {
+	return selectors.join(', ');
+};
+
+const eachNode = (nodeList, callback) => {
+	for (let i = 0; i < nodeList.length; i++) {
+		callback(nodeList[i]);
+	}
+};
+
+const throwError = (message) => {
+	console.error(`[scroll-lock] ${message}`);
+};
+
 class ScrollLock {
 	constructor() {
-		this.state = true;
+		this._state = true;
+		this._fillGupAvailableMethods = ['padding', 'margin', 'width'];
+		this._fillGupMethod = this._fillGupAvailableMethods[0];
+		this._fillGupSelectors = ['body', `.${FILLGUP_CLASSNAME}`];
+
 		bindEvents(this);
 	}
 
 	getState() {
-		return this.state;
+		return this._state;
 	}
 
 	hide() {
-		const currentWidth = this.getCurrentWidth();
+		this._fillGups();
 		document.body.style.overflow = 'hidden';
-		document.body.style.paddingRight = currentWidth + 'px';
-		this.state = false;
+		this._state = false;
+
+		return this;
 	}
 
 	show() {
 		document.body.style.overflow = '';
-		document.body.style.paddingRight = '';
-		this.state = true;
+		this._unfillGups();
+		this._state = true;
+
+		return this;
 	}
 
 	toggle() {
@@ -96,6 +120,8 @@ class ScrollLock {
 		} else {
 			this.show();
 		}
+
+		return this;
 	}
 
 	getWidth() {
@@ -112,6 +138,55 @@ class ScrollLock {
 		const windowWidth = window.innerWidth;
 		const currentWidth = windowWidth - documentWidth;
 		return currentWidth;
+	}
+
+	setFillGupMethod(method) {
+		const parsedMethod = method.toLowerCase();
+		if (this._fillGupAvailableMethods.includes(parsedMethod)) {
+			this._fillGupMethod = parsedMethod;
+		} else {
+			throwError(`"${method}" method is not available!`);
+		}
+
+		return this;
+	}
+
+	setFillGupSelectors(selectors) {
+		if (Array.isArray(selectors)) {
+			selectors.push(`.${FILLGUP_CLASSNAME}`);
+			this._fillGupSelectors = selectors;
+		} else {
+			throwError('setFillGupSelectors accepts only array!');
+		}
+
+		return this;
+	}
+
+	_fillGups() {
+		const selector = generateSelector(this._fillGupSelectors);
+		const currentWidth = this.getCurrentWidth();
+		const elements = document.querySelectorAll(selector);
+
+		eachNode(elements, (element) => {
+			if (this._fillGupMethod === 'margin') {
+				element.style.marginRight = `${currentWidth}px`;
+			} else if (this._fillGupMethod === 'width') {
+				element.style.width = `calc(100% - ${currentWidth}px)`;
+			} else {
+				element.style.paddingRight = `${currentWidth}px`;
+			}
+		});
+	}
+
+	_unfillGups() {
+		const selector = generateSelector(this._fillGupSelectors);
+		const elements = document.querySelectorAll(selector);
+
+		eachNode(elements, (element) => {
+			element.style.marginRight = '';
+			element.style.width = '';
+			element.style.paddingRight = '';
+		});
 	}
 }
 

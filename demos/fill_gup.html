@@ -4,9 +4,30 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>scroll-lock</title>
+	<title>scroll-lock fill gup</title>
 	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		.nav {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			padding: 20px;
+			background-color: #ddd;
+			text-align: right;
+		}
+
 		.container {
+			margin-top: 60px;
+			padding: 20px;
 			height: 150vh;
 		}
 		.modal {
@@ -41,6 +62,7 @@
 	</style>
 </head>
 <body>
+	<div class="nav sl--fillgup">position fixed element</div>
 	<div class="container">
 		<h1>Scroll this container!</h1>
 		<button id="openmodal">Open Modal</button>
@@ -69,6 +91,9 @@
 		$open = document.getElementById('openmodal');
 		$close = document.getElementById('closemodal');
 		$modal = document.getElementById('modal');
+
+		scrollLock
+		.setFillGupMethod('width');
 
 		function open() {
 			scrollLock.hide();

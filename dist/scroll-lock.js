@@ -88,6 +88,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var FILLGUP_CLASSNAME = 'sl--fillgup';
 var SCROLLABLE_CLASSNAME = 'sl--scrollable';
 var PREVENT_SCROLL_DATASET = 'slPrevented';
 var DELTA_DATASET = 'slDelta';
@@ -140,6 +141,8 @@ var touchmoveEventHandler = function touchmoveEventHandler(e, scrollLock) {
 					}
 				}
 			}
+		} else {
+			e.preventDefault();
 		}
 	}
 };
@@ -163,33 +166,54 @@ var bindEvents = function bindEvents(scrollLock) {
 	});
 };
 
+var generateSelector = function generateSelector(selectors) {
+	return selectors.join(', ');
+};
+
+var eachNode = function eachNode(nodeList, callback) {
+	for (var i = 0; i < nodeList.length; i++) {
+		callback(nodeList[i]);
+	}
+};
+
+var throwError = function throwError(message) {
+	console.error('[scroll-lock] ' + message);
+};
+
 var ScrollLock = function () {
 	function ScrollLock() {
 		_classCallCheck(this, ScrollLock);
 
-		this.state = true;
+		this._state = true;
+		this._fillGupAvailableMethods = ['padding', 'margin', 'width'];
+		this._fillGupMethod = this._fillGupAvailableMethods[0];
+		this._fillGupSelectors = ['body', '.' + FILLGUP_CLASSNAME];
+
 		bindEvents(this);
 	}
 
 	_createClass(ScrollLock, [{
 		key: 'getState',
 		value: function getState() {
-			return this.state;
+			return this._state;
 		}
 	}, {
 		key: 'hide',
 		value: function hide() {
-			var currentWidth = this.getCurrentWidth();
+			this._fillGups();
 			document.body.style.overflow = 'hidden';
-			document.body.style.paddingRight = currentWidth + 'px';
-			this.state = false;
+			this._state = false;
+
+			return this;
 		}
 	}, {
 		key: 'show',
 		value: function show() {
 			document.body.style.overflow = '';
-			document.body.style.paddingRight = '';
-			this.state = true;
+			this._unfillGups();
+			this._state = true;
+
+			return this;
 		}
 	}, {
 		key: 'toggle',
@@ -199,6 +223,8 @@ var ScrollLock = function () {
 			} else {
 				this.show();
 			}
+
+			return this;
 		}
 	}, {
 		key: 'getWidth',
@@ -217,6 +243,61 @@ var ScrollLock = function () {
 			var windowWidth = window.innerWidth;
 			var currentWidth = windowWidth - documentWidth;
 			return currentWidth;
+		}
+	}, {
+		key: 'setFillGupMethod',
+		value: function setFillGupMethod(method) {
+			var parsedMethod = method.toLowerCase();
+			if (this._fillGupAvailableMethods.includes(parsedMethod)) {
+				this._fillGupMethod = parsedMethod;
+			} else {
+				throwError('"' + method + '" method is not available!');
+			}
+
+			return this;
+		}
+	}, {
+		key: 'setFillGupSelectors',
+		value: function setFillGupSelectors(selectors) {
+			if (Array.isArray(selectors)) {
+				selectors.push('.' + FILLGUP_CLASSNAME);
+				this._fillGupSelectors = selectors;
+			} else {
+				throwError('setFillGupSelectors accepts only array!');
+			}
+
+			return this;
+		}
+	}, {
+		key: '_fillGups',
+		value: function _fillGups() {
+			var _this = this;
+
+			var selector = generateSelector(this._fillGupSelectors);
+			var currentWidth = this.getCurrentWidth();
+			var elements = document.querySelectorAll(selector);
+
+			eachNode(elements, function (element) {
+				if (_this._fillGupMethod === 'margin') {
+					element.style.marginRight = currentWidth + 'px';
+				} else if (_this._fillGupMethod === 'width') {
+					element.style.width = 'calc(100% - ' + currentWidth + 'px)';
+				} else {
+					element.style.paddingRight = currentWidth + 'px';
+				}
+			});
+		}
+	}, {
+		key: '_unfillGups',
+		value: function _unfillGups() {
+			var selector = generateSelector(this._fillGupSelectors);
+			var elements = document.querySelectorAll(selector);
+
+			eachNode(elements, function (element) {
+				element.style.marginRight = '';
+				element.style.width = '';
+				element.style.paddingRight = '';
+			});
 		}
 	}]);
 

@@ -35,6 +35,19 @@ Live example: https://s.codepen.io/FL3NKEY/debug/YaQPrg/bYrdyGLGdoJA
 <br>
 Source code: https://codepen.io/FL3NKEY/pen/YaQPrg
 
+## Fill gup
+What is mean? When `body` has `overflow: hidden;` property, he loses scrollbar width (Chrome, Firefox, etc. in Windows) and has flickering effect in child elements. To prevent this, **scroll-lock** calculate width of scrollbar before hide scrollbar and fills the gap.
+<br>
+But this dont work for `position: fixed;` element, use `sl--fillgup` for handling that!
+
+##### After `scrollLock.hide()`
+```html
+<body style="overflow: hidden; padding-right: ${sroll-width};"></body>
+```
+Also, [you can change fill gup method](#setfillgupmethod)!
+
+![Image from javascript.info](https://javascript.info/article/size-and-scroll/metric-css.png)
+
 ## Methods
 ### hide()
 Hide body scrollbar and prevent scroll.
@@ -72,4 +85,31 @@ scrollLock.getWidth();
 Get current width of body scrollbar.
 ``` js
 scrollLock.getCurrentWidth();
+```
+
+### setFillGupMethod(method)
+Set fill gup method.
+<br>
+**Type:** String
+<br>
+**Available values:**
+- `padding`: `padding-right: ${scroll-width};`
+- `margin`: `margin-right: ${scroll-width};`
+- `width`: `width: calc(100% - ${scroll-width});`
+
+**Default value:** `padding` 
+``` js
+scrollLock.setFillGupMethod('width');
+```
+
+### setFillGupSelectors(selectors)
+Set fill gup selectors.
+<br>
+**Type:** Array
+<br>
+**Available values:** Array of selectors.
+<br>
+**Default value:** `['body']` 
+``` js
+scrollLock.setFillGupSelectors(['body', '.some-element', '#another-element']);
 ```
