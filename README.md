@@ -42,7 +42,7 @@ But this dont work for `position: fixed;` element, use `sl--fillgap` for handlin
 
 ##### After `scrollLock.hide()`
 ```html
-<body style="overflow: hidden; padding-right: ${sroll-width};"></body>
+<body style="overflow: hidden; padding-right: ${scroll-width};"></body>
 ```
 Also, [you can change fill gap method](#setfillgapmethodmethod)!
 
