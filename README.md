@@ -1,6 +1,8 @@
 # scroll-lock
-A Javascript utility library for working with native scrollbar. Also preventing scroll in iOS and another touch devices.
-
+A Javascript utility library for the native scrollbar. Also preventing scroll in iOS and another touch devices.
+<br>
+<br>
+[README на русском](https://github.com/FL3NKEY/scroll-lock/blob/master/README.RU.md).
 ## Install
 **Via npm** `npm install scroll-lock --save`
 
@@ -18,46 +20,50 @@ var scrollLock = require('scroll-lock');
 window.scrollLock;
 ```
 
-## Preventing
-When you do `scrollLock.hide()` you also preventing scroll for iOS ([issue](https://stackoverflow.com/questions/28790889/css-how-to-prevent-scrolling-on-ios-safari)).
+## Pitfall # 1 (Disabling scrolling)
+When the `scrollLock.hide()` method is called, also scrolling turns off in iOS and other touch devices ([essence of the problem](https://stackoverflow.com/questions/28790889/css-how-to-prevent-scrolling-on-ios-safari)). If we consider more specifically, **scroll-lock** captures touch events and processes them, in which case it causes preventDefault(). So if you call `scrollLock.hide()` and specif any element `overflow-y` value `scroll`, then the element will not scroll (we are talking only about the touch devices).
 <br>
-If you want make scrollable element on touch devices when scroll is prevented, use `sl--scrollable` class (also element must have `overflow` property).
+If you wanna make any element “scrollable”, specify to that element `sl--scrollable` class name (it must have `overflow-y` property, `scroll` or `auto`).
 ```html
 <div class="modal-scroll sl--scrollable"></div>
 ```
 ```css
 .modal-scroll {
 	overflow: auto;
-	-webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+	-webkit-overflow-scrolling: touch; /* smooth scroll in iOS */
 }
 ```
+
 Live example: https://fl3nkey.github.io/scroll-lock/demos/index.html
 <br>
-Source code: https://codepen.io/FL3NKEY/pen/YaQPrg
+Example sources: https://codepen.io/FL3NKEY/pen/YaQPrg
 
-## Fill gap
-What is mean? When `body` has `overflow: hidden;` property, he loses scrollbar width (Chrome, Firefox, etc. in Windows) and has flickering effect in child elements. To prevent this, **scroll-lock** calculate width of scrollbar before hide scrollbar and fills the gap.
+
+## Pitfall #2 (Width of the scrollbar and flickering)
+What we are talking about? When body has `overflow` property set to `hidden`, the width of the container increases to the width of the scrollbar, therefore appears unpleasant flickering effect. Explanation: for example the container width is *1200px*, and the width of the window *1217px* (width of the container + width of the scrollbar) then after `scrollLock.hide()` the width of the container will take the width of the window.
 <br>
-But this dont work for `position: fixed;` elements, use `sl--fillgap` class for handling that!
+But to evolve this, **scroll-lock** calculates the width of the scrollbar before disabling scrolling and fills the gap.
+<br>
+But this does not works with the elements that have a `position` property set to `fixed`.
+In this case you must specify to the element `sl--fillgap` class name.
 ```html
 <div class="fixed-element sl--fillgap"></div>
 ```
-
-##### After `scrollLock.hide()`
+After calling the method `scrollLock.hide()`:
 ```html
-<body style="overflow: hidden; padding-right: ${scroll-width};">
-	<div class="fixed-element sl-fillgap" style="padding-right: ${scroll-width};">...</div>
+<body style="overflow: hidden; padding-right: ${scrollbar-width};">
+	<div class="fixed-element sl-fillgap" style="padding-right: ${scrollbar-width};">...</div>
 </body>
 ```
-Also, you can change fill gap [method](#setfillgapmethodmethod) and [selectors](#setfillgapselectorsselectors)!
+You can also change the method of [fill gap](#setfillgapmethodmethod) and [selectors](#setfillgapselectorsselectors).
 
 Live example: https://fl3nkey.github.io/scroll-lock/demos/fill_gap.html
 <br>
-Source code: https://codepen.io/FL3NKEY/pen/JLeJqY
+Example sources: https://codepen.io/FL3NKEY/pen/JLeJqY
 
 ## Methods
 ### hide()
-Hide body scrollbar and prevent scroll.
+Hide body scrollbar and disable scroll.
 ``` js
 scrollLock.hide();
 ```
@@ -120,3 +126,5 @@ Set fill gap selectors.
 ``` js
 scrollLock.setFillGapSelectors(['body', '.some-element', '#another-element']);
 ```
+---
+🙌 I would like to thank “Armani” for the translation. 🙌
