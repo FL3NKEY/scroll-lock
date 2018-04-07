@@ -31,22 +31,29 @@ If you want make scrollable element on touch devices when scroll is prevented, u
 	-webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
 }
 ```
-Live example: https://s.codepen.io/FL3NKEY/debug/YaQPrg/bYrdyGLGdoJA
+Live example: https://fl3nkey.github.io/scroll-lock/demos/index.html
 <br>
 Source code: https://codepen.io/FL3NKEY/pen/YaQPrg
 
 ## Fill gap
 What is mean? When `body` has `overflow: hidden;` property, he loses scrollbar width (Chrome, Firefox, etc. in Windows) and has flickering effect in child elements. To prevent this, **scroll-lock** calculate width of scrollbar before hide scrollbar and fills the gap.
 <br>
-But this dont work for `position: fixed;` element, use `sl--fillgap` for handling that!
+But this dont work for `position: fixed;` elements, use `sl--fillgap` class for handling that!
+```html
+<div class="fixed-element sl--fillgap"></div>
+```
 
 ##### After `scrollLock.hide()`
 ```html
-<body style="overflow: hidden; padding-right: ${scroll-width};"></body>
+<body style="overflow: hidden; padding-right: ${scroll-width};">
+	<div class="fixed-element sl-fillgap" style="padding-right: ${scroll-width};">...</div>
+</body>
 ```
-Also, [you can change fill gap method](#setfillgapmethodmethod)!
+Also, you can change fill gap [method](#setfillgapmethodmethod) and [selectors](#setfillgapselectorsselectors)!
 
-![Image from javascript.info](https://javascript.info/article/size-and-scroll/metric-css.png)
+Live example: https://fl3nkey.github.io/scroll-lock/demos/fill_gap.html
+<br>
+Source code: https://codepen.io/FL3NKEY/pen/JLeJqY
 
 ## Methods
 ### hide()
