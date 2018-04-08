@@ -55,7 +55,7 @@ After calling the method `scrollLock.hide()`:
 	<div class="fixed-element sl-fillgap" style="padding-right: ${scrollbar-width};">...</div>
 </body>
 ```
-You can also change the method of [fill gap](#setfillgapmethodmethod) and [selectors](#setfillgapselectorsselectors).
+You can also change the [method](#setfillgapmethodmethod) of fill gap and [selectors](#setfillgapselectorsselectors).
 
 Live example: https://fl3nkey.github.io/scroll-lock/demos/fill_gap.html
 <br>
