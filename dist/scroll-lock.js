@@ -88,10 +88,25 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var FILLGAP_CLASSNAME = 'sl--fillgap';
 var SCROLLABLE_CLASSNAME = 'sl--scrollable';
+var FILLGAP_CLASSNAME = 'sl--fillgap';
 var PREVENT_SCROLL_DATASET = 'slPrevented';
 var DELTA_DATASET = 'slDelta';
+var FILLGAP_AVAILABLE_METHODS = ['padding', 'margin', 'width'];
+
+var _state = true;
+var _fillGapMethod = FILLGAP_AVAILABLE_METHODS[0];
+var _fillGapSelectors = ['body', '.' + FILLGAP_CLASSNAME];
+
+var generateSelector = function generateSelector(selectors) {
+	return selectors.join(', ');
+};
+
+var eachNode = function eachNode(nodeList, callback) {
+	for (var i = 0; i < nodeList.length; i++) {
+		callback(nodeList[i]);
+	}
+};
 
 var findTarget = function findTarget(e) {
 	var target = e.target;
@@ -102,6 +117,10 @@ var findTarget = function findTarget(e) {
 		target = target.parentNode;
 	}
 	return target;
+};
+
+var throwError = function throwError(message) {
+	console.error('[scroll-lock] ' + message);
 };
 
 var touchstartEventHandler = function touchstartEventHandler(e, scrollLock) {
@@ -166,28 +185,9 @@ var bindEvents = function bindEvents(scrollLock) {
 	});
 };
 
-var generateSelector = function generateSelector(selectors) {
-	return selectors.join(', ');
-};
-
-var eachNode = function eachNode(nodeList, callback) {
-	for (var i = 0; i < nodeList.length; i++) {
-		callback(nodeList[i]);
-	}
-};
-
-var throwError = function throwError(message) {
-	console.error('[scroll-lock] ' + message);
-};
-
 var ScrollLock = function () {
 	function ScrollLock() {
 		_classCallCheck(this, ScrollLock);
-
-		this._state = true;
-		this._fillGapAvailableMethods = ['padding', 'margin', 'width'];
-		this._fillGapMethod = this._fillGapAvailableMethods[0];
-		this._fillGapSelectors = ['body', '.' + FILLGAP_CLASSNAME];
 
 		bindEvents(this);
 	}
@@ -195,14 +195,14 @@ var ScrollLock = function () {
 	_createClass(ScrollLock, [{
 		key: 'getState',
 		value: function getState() {
-			return this._state;
+			return _state;
 		}
 	}, {
 		key: 'hide',
 		value: function hide() {
 			this._fillGaps();
 			document.body.style.overflow = 'hidden';
-			this._state = false;
+			_state = false;
 
 			return this;
 		}
@@ -211,7 +211,7 @@ var ScrollLock = function () {
 		value: function show() {
 			document.body.style.overflow = '';
 			this._unfillGaps();
-			this._state = true;
+			_state = true;
 
 			return this;
 		}
@@ -248,8 +248,8 @@ var ScrollLock = function () {
 		key: 'setFillGapMethod',
 		value: function setFillGapMethod(method) {
 			var parsedMethod = method.toLowerCase();
-			if (this._fillGapAvailableMethods.includes(parsedMethod)) {
-				this._fillGapMethod = parsedMethod;
+			if (FILLGAP_AVAILABLE_METHODS.includes(parsedMethod)) {
+				_fillGapMethod = parsedMethod;
 			} else {
 				throwError('"' + method + '" method is not available!');
 			}
@@ -261,7 +261,7 @@ var ScrollLock = function () {
 		value: function setFillGapSelectors(selectors) {
 			if (Array.isArray(selectors)) {
 				selectors.push('.' + FILLGAP_CLASSNAME);
-				this._fillGapSelectors = selectors;
+				_fillGapSelectors = selectors;
 			} else {
 				throwError('setFillGapSelectors accepts only array!');
 			}
@@ -271,16 +271,14 @@ var ScrollLock = function () {
 	}, {
 		key: '_fillGaps',
 		value: function _fillGaps() {
-			var _this = this;
-
-			var selector = generateSelector(this._fillGapSelectors);
+			var selector = generateSelector(_fillGapSelectors);
 			var currentWidth = this.getCurrentWidth();
 			var elements = document.querySelectorAll(selector);
 
 			eachNode(elements, function (element) {
-				if (_this._fillGapMethod === 'margin') {
+				if (_fillGapMethod === 'margin') {
 					element.style.marginRight = currentWidth + 'px';
-				} else if (_this._fillGapMethod === 'width') {
+				} else if (_fillGapMethod === 'width') {
 					element.style.width = 'calc(100% - ' + currentWidth + 'px)';
 				} else {
 					element.style.paddingRight = currentWidth + 'px';
@@ -290,7 +288,7 @@ var ScrollLock = function () {
 	}, {
 		key: '_unfillGaps',
 		value: function _unfillGaps() {
-			var selector = generateSelector(this._fillGapSelectors);
+			var selector = generateSelector(_fillGapSelectors);
 			var elements = document.querySelectorAll(selector);
 
 			eachNode(elements, function (element) {
