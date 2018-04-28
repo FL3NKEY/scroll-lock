@@ -21,7 +21,7 @@ window.scrollLock;
 ## Подводный камень #1 (Отключение скроллинга)
 Когда вызывается метод `scrollLock.hide()`, так же скроллинг отключается в iOS и других тач устройствах ([суть проблемы](https://toster.ru/q/461836)). Если рассматривать конкретнее, то **scroll-lock** отлавливает touch эвенты и обрабатывает их, в случае чего вызывает preventDefault(). Поэтому если вызвать `scrollLock.hide()` и указать какому либо элементу `overflow-y` со значением `scroll`, то этот элемент скроллится не будет (речь идёт только о тач устройствах).
 <br>
-Если надо сделать какой-либо элемент "скроллабельным", укажи этому элементу `sl--scrollable` класс (он же должен иметь `overflow-y` свойство, `scroll` или `auto`).
+Если надо сделать какой-либо элемент "скроллабельным", укажи этому элементу `sl--scrollable` класс (он же должен иметь `overflow-y` свойство, `scroll` или `auto`) или используйте `scrollLock.setScrollableTargets(targets)` метод или укажите его первым аргументов в методе `scrollLock.hide(targets)`.
 ```html
 <div class="modal-scroll sl--scrollable"></div>
 ```
@@ -31,6 +31,14 @@ window.scrollLock;
 	-webkit-overflow-scrolling: touch; /* не забывай про это свойство, скроллинг в iOS будет более плавным */
 }
 ```
+```js
+var $scrollableTarget = document.getElementById('scrollable');
+
+scrollLock.setScrollableTargets($scrollableTarget);
+//или
+scrollLock.hide($scrollableTarget);
+```
+
 Лайв пример: https://fl3nkey.github.io/scroll-lock/demos/index.html
 <br>
 Исходники примера: https://codepen.io/FL3NKEY/pen/YaQPrg
@@ -51,17 +59,19 @@ window.scrollLock;
 	<div class="fixed-element sl-fillgap" style="padding-right: ${scroll-width};">...</div>
 </body>
 ```
-Так же можно изменить метод "[заполнения пробела](#setfillgapmethodmethod)" и "[селекторы](#setfillgapselectorsselectors)"!
+Так же можно изменить "[метод заполнения пробела](#setfillgapmethodmethod)", "[селекторы](#setfillgapselectorsselectors)" и "[элементы](#setfillgaptargetstargets)"!
 
 Лайв пример: https://fl3nkey.github.io/scroll-lock/demos/fill_gap.html
 <br>
 Исходники примера: https://codepen.io/FL3NKEY/pen/JLeJqY
 
 ## Методы
-### hide()
+### hide(targets)
 Скрытие полосы прокрутки и отключение скроллинга.
+<br>
+**Тип:** Element или Array
 ``` js
-scrollLock.hide();
+scrollLock.hide($scrollableElement);
 ```
 
 ### show()
@@ -96,6 +106,14 @@ scrollLock.getWidth();
 scrollLock.getCurrentWidth();
 ```
 
+### setScrollableTargets(targets)
+Указывает элементы, которые должны скроллится.
+<br>
+**Тип:** Element или Array
+``` js
+scrollLock.setScrollableTargets($scrollableElement);
+```
+
 ### setFillGapMethod(method)
 Изменяет метод "заполнение пробела".
 <br>
@@ -121,4 +139,12 @@ scrollLock.setFillGapMethod('width');
 **Значение по умолчанию** `['body']` 
 ``` js
 scrollLock.setFillGapSelectors(['body', '.some-element', '#another-element']);
+```
+
+### setFillGapTargets(targets)
+Указывает элементы, которым будет "заполняться пробел".
+<br>
+**Тип:** Element или Array
+``` js
+scrollLock.setFillGapTargets($someElement);
 ```

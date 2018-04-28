@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>scroll-lock</title>
+	<style>
+		.container {
+			height: 150vh;
+		}
+		.modal {
+			display: none;
+			position: fixed;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 100%;
+			z-index: 100;
+			background-color: rgba(0, 0, 0, 0.6);
+			overflow: hidden;
+		}
+		.modal-scroll {
+			position: fixed;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 100%;
+			z-index: 100;
+			background-color: rgba(0, 0, 0, 0.2);
+			overflow: auto;
+			-webkit-overflow-scrolling: touch;
+		}
+		.modal-content {
+			max-width: 400px;
+			height: 200vh;
+			background-color: #fff;
+			margin: 40px auto;
+			padding: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Scroll this container!</h1>
+		<button id="openmodal">Open Modal</button>
+	</div>
+	<div class="modal" id="modal">
+		<div class="modal-scroll" id="modal-scroll">
+			<div class="modal-content">
+				<h1>Scroll this modal!</h1>
+				<button id="closemodal">Close Modal</button>
+				<p>
+					<input type="text" placeholder="Type some...">
+				</p>
+				<p>
+					<select>
+						<option disabled selected>Select some...</option>
+						<option>ooyyy</option>
+						<option>lmao</option>
+						<option>privet</option>
+					</select>
+				</p>
+			</div>
+		</div>
+	</div>
+	<script src="./../dist/scroll-lock.js"></script>
+	<script>
+		$open = document.getElementById('openmodal');
+		$close = document.getElementById('closemodal');
+		$modal = document.getElementById('modal');
+		$modalScroll = document.getElementById('modal-scroll');
+
+		function open() {
+			scrollLock.hide([$modalScroll]);
+			$modal.style.display = 'block';
+		}
+
+		function close() {
+			$modal.style.display = 'none';
+			scrollLock.show();
+		}
+
+		$open.addEventListener('click', open);
+		$close.addEventListener('click', close);
+	</script>
+</body>
+</html>

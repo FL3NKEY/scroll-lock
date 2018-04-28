@@ -5,8 +5,13 @@ const DELTA_DATASET = 'slDelta';
 const FILLGAP_AVAILABLE_METHODS = ['padding', 'margin', 'width'];
 
 let _state = true;
+
+let _scrollableTargets = [];
+let _temporaryScrollableTargets = [];
+
 let _fillGapMethod = FILLGAP_AVAILABLE_METHODS[0];
 let _fillGapSelectors = ['body', `.${FILLGAP_CLASSNAME}`];
+let _fillGapTargets = [];
 
 const generateSelector = (selectors) => {
 	return selectors.join(', ');
@@ -98,7 +103,8 @@ class ScrollLock {
 		return _state;
 	}
 
-	hide() {
+	hide(targets) {
+		this._setTemporaryScrollableTargets(targets);
 		this._fillGaps();
 		document.body.style.overflow = 'hidden';
 		_state = false;
@@ -130,6 +136,7 @@ class ScrollLock {
 		document.body.style.overflow = 'scroll';
 		width = this.getCurrentWidth();
 		document.body.style.overflow = overflowCurrentProperty;
+
 		return width;
 	}
 
@@ -137,7 +144,20 @@ class ScrollLock {
 		const documentWidth = document.documentElement.clientWidth;
 		const windowWidth = window.innerWidth;
 		const currentWidth = windowWidth - documentWidth;
+
 		return currentWidth;
+	}
+
+	setScrollableTargets(targets) {
+		if (Array.isArray(selectors)) {
+			_scrollableTargets = targets;
+		} else if (targets) {
+			_scrollableTargets = [targets];
+		}
+
+		eachNode(_scrollableTargets, (element) => this._makeScrollableTargetsElement(element));
+
+		return this;
 	}
 
 	setFillGapMethod(method) {
@@ -155,19 +175,51 @@ class ScrollLock {
 		if (Array.isArray(selectors)) {
 			selectors.push(`.${FILLGAP_CLASSNAME}`);
 			_fillGapSelectors = selectors;
-		} else {
-			throwError('setFillGapSelectors accepts only array!');
+		} else if (selectors) {
+			_fillGapSelectors = [selectors];
 		}
 
 		return this;
 	}
 
+	setFillGapTargets(targets) {
+		if (Array.isArray(targets)) {
+			_fillGapTargets = targets;
+		} else if (targets) {
+			_fillGapTargets = [targets];
+		}
+
+		return this;
+	}
+
+	_setTemporaryScrollableTargets(targets) {
+		if (Array.isArray(targets)) {
+			_temporaryScrollableTargets = targets;
+		} else if (targets) {
+			_temporaryScrollableTargets = [targets];
+		}
+
+		eachNode(_temporaryScrollableTargets, (element) => this._makeScrollableTargetsElement(element));
+	}
+
+	_makeScrollableTargetsElement(element) {
+		if (element instanceof Element) {
+			element.classList.add(SCROLLABLE_CLASSNAME);
+		}
+	}
+
 	_fillGaps() {
 		const selector = generateSelector(_fillGapSelectors);
-		const currentWidth = this.getCurrentWidth();
 		const elements = document.querySelectorAll(selector);
 
-		eachNode(elements, (element) => {
+		eachNode(elements, (element) => this._fillGapsElement(element));
+		eachNode(_fillGapTargets, (element) => this._fillGapsElement(element));
+	}
+
+	_fillGapsElement(element) {
+		const currentWidth = this.getCurrentWidth();
+
+		if (element instanceof Element) {
 			if (_fillGapMethod === 'margin') {
 				element.style.marginRight = `${currentWidth}px`;
 			} else if (_fillGapMethod === 'width') {
@@ -175,18 +227,23 @@ class ScrollLock {
 			} else {
 				element.style.paddingRight = `${currentWidth}px`;
 			}
-		});
+		}
 	}
 
 	_unfillGaps() {
 		const selector = generateSelector(_fillGapSelectors);
 		const elements = document.querySelectorAll(selector);
 
-		eachNode(elements, (element) => {
+		eachNode(elements, (element) => this._unfillGapsElement(element));
+		eachNode(_fillGapTargets, (element) => this._unfillGapsElement(element));
+	}
+
+	_unfillGapsElement(element) {
+		if (element instanceof Element) {
 			element.style.marginRight = '';
 			element.style.width = '';
 			element.style.paddingRight = '';
-		});
+		}
 	}
 }
 

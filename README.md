@@ -8,7 +8,7 @@ A Javascript utility library for the native scrollbar. Also preventing scroll in
 
 ``` js
 import scrollLock from 'scroll-lock';
-//OR
+//or
 var scrollLock = require('scroll-lock');
 ```
 
@@ -23,7 +23,7 @@ window.scrollLock;
 ## Pitfall # 1 (Disabling scrolling)
 When the `scrollLock.hide()` method is called, also scrolling turns off in iOS and other touch devices ([essence of the problem](https://stackoverflow.com/questions/28790889/css-how-to-prevent-scrolling-on-ios-safari)). If we consider more specifically, **scroll-lock** captures touch events and processes them, in which case it causes preventDefault(). So if you call `scrollLock.hide()` and specif any element `overflow-y` value `scroll`, then the element will not scroll (we are talking only about the touch devices).
 <br>
-If you wanna make any element “scrollable”, specify to that element `sl--scrollable` class name (it must have `overflow-y` property, `scroll` or `auto`).
+If you wanna make any element “scrollable”, specify to that element `sl--scrollable` class name (it must have `overflow-y` property, `scroll` or `auto`) or use `scrollLock.setScrollableTargets(targets)` method or indicate as argument in `scrollLock.hide(targets)` method.
 ```html
 <div class="modal-scroll sl--scrollable"></div>
 ```
@@ -32,6 +32,13 @@ If you wanna make any element “scrollable”, specify to that element `sl--scr
 	overflow: auto;
 	-webkit-overflow-scrolling: touch; /* smooth scroll in iOS */
 }
+```
+```js
+var $scrollableTarget = document.getElementById('scrollable');
+
+scrollLock.setScrollableTargets($scrollableTarget);
+//or
+scrollLock.hide($scrollableTarget);
 ```
 
 Live example: https://fl3nkey.github.io/scroll-lock/demos/index.html
@@ -55,7 +62,7 @@ After calling the method `scrollLock.hide()`:
 	<div class="fixed-element sl-fillgap" style="padding-right: ${scrollbar-width};">...</div>
 </body>
 ```
-You can also change the [method](#setfillgapmethodmethod) of fill gap and [selectors](#setfillgapselectorsselectors).
+You can also change the [method of fill gap](#setfillgapmethodmethod), [selectors](#setfillgapselectorsselectors) and [elements](#setfillgaptargetstargets).
 
 Live example: https://fl3nkey.github.io/scroll-lock/demos/fill_gap.html
 <br>
@@ -64,8 +71,10 @@ Example sources: https://codepen.io/FL3NKEY/pen/JLeJqY
 ## Methods
 ### hide()
 Hide body scrollbar and disable scroll.
+<br>
+**Type:** Element or Array
 ``` js
-scrollLock.hide();
+scrollLock.hide($scrollableElement);
 ```
 
 ### show()
@@ -100,6 +109,15 @@ Get current width of body scrollbar.
 scrollLock.getCurrentWidth();
 ```
 
+### setScrollableTargets(targets)
+Set scrollable elements.
+<br>
+**Type:** Element or Array
+``` js
+scrollLock.setScrollableTargets($scrollableElement);
+```
+
+
 ### setFillGapMethod(method)
 Set fill gap method.
 <br>
@@ -126,5 +144,14 @@ Set fill gap selectors.
 ``` js
 scrollLock.setFillGapSelectors(['body', '.some-element', '#another-element']);
 ```
+
+### setFillGapTargets(targets)
+Set fill gap elements.
+<br>
+**Type:** Element or Array
+``` js
+scrollLock.setFillGapTargets($someElement);
+```
+
 ---
 🙌 I would like to thank “Armani” for the translation. 🙌

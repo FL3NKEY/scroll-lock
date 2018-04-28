@@ -95,8 +95,13 @@ var DELTA_DATASET = 'slDelta';
 var FILLGAP_AVAILABLE_METHODS = ['padding', 'margin', 'width'];
 
 var _state = true;
+
+var _scrollableTargets = [];
+var _temporaryScrollableTargets = [];
+
 var _fillGapMethod = FILLGAP_AVAILABLE_METHODS[0];
 var _fillGapSelectors = ['body', '.' + FILLGAP_CLASSNAME];
+var _fillGapTargets = [];
 
 var generateSelector = function generateSelector(selectors) {
 	return selectors.join(', ');
@@ -199,7 +204,8 @@ var ScrollLock = function () {
 		}
 	}, {
 		key: 'hide',
-		value: function hide() {
+		value: function hide(targets) {
+			this._setTemporaryScrollableTargets(targets);
 			this._fillGaps();
 			document.body.style.overflow = 'hidden';
 			_state = false;
@@ -234,6 +240,7 @@ var ScrollLock = function () {
 			document.body.style.overflow = 'scroll';
 			width = this.getCurrentWidth();
 			document.body.style.overflow = overflowCurrentProperty;
+
 			return width;
 		}
 	}, {
@@ -242,7 +249,25 @@ var ScrollLock = function () {
 			var documentWidth = document.documentElement.clientWidth;
 			var windowWidth = window.innerWidth;
 			var currentWidth = windowWidth - documentWidth;
+
 			return currentWidth;
+		}
+	}, {
+		key: 'setScrollableTargets',
+		value: function setScrollableTargets(targets) {
+			var _this = this;
+
+			if (Array.isArray(selectors)) {
+				_scrollableTargets = targets;
+			} else if (targets) {
+				_scrollableTargets = [targets];
+			}
+
+			eachNode(_scrollableTargets, function (element) {
+				return _this._makeScrollableTargetsElement(element);
+			});
+
+			return this;
 		}
 	}, {
 		key: 'setFillGapMethod',
@@ -262,20 +287,66 @@ var ScrollLock = function () {
 			if (Array.isArray(selectors)) {
 				selectors.push('.' + FILLGAP_CLASSNAME);
 				_fillGapSelectors = selectors;
-			} else {
-				throwError('setFillGapSelectors accepts only array!');
+			} else if (selectors) {
+				_fillGapSelectors = [selectors];
 			}
 
 			return this;
 		}
 	}, {
+		key: 'setFillGapTargets',
+		value: function setFillGapTargets(targets) {
+			if (Array.isArray(targets)) {
+				_fillGapTargets = targets;
+			} else if (targets) {
+				_fillGapTargets = [targets];
+			}
+
+			return this;
+		}
+	}, {
+		key: '_setTemporaryScrollableTargets',
+		value: function _setTemporaryScrollableTargets(targets) {
+			var _this2 = this;
+
+			if (Array.isArray(targets)) {
+				_temporaryScrollableTargets = targets;
+			} else if (targets) {
+				_temporaryScrollableTargets = [targets];
+			}
+
+			eachNode(_temporaryScrollableTargets, function (element) {
+				return _this2._makeScrollableTargetsElement(element);
+			});
+		}
+	}, {
+		key: '_makeScrollableTargetsElement',
+		value: function _makeScrollableTargetsElement(element) {
+			if (element instanceof Element) {
+				element.classList.add(SCROLLABLE_CLASSNAME);
+			}
+		}
+	}, {
 		key: '_fillGaps',
 		value: function _fillGaps() {
+			var _this3 = this;
+
 			var selector = generateSelector(_fillGapSelectors);
-			var currentWidth = this.getCurrentWidth();
 			var elements = document.querySelectorAll(selector);
 
 			eachNode(elements, function (element) {
+				return _this3._fillGapsElement(element);
+			});
+			eachNode(_fillGapTargets, function (element) {
+				return _this3._fillGapsElement(element);
+			});
+		}
+	}, {
+		key: '_fillGapsElement',
+		value: function _fillGapsElement(element) {
+			var currentWidth = this.getCurrentWidth();
+
+			if (element instanceof Element) {
 				if (_fillGapMethod === 'margin') {
 					element.style.marginRight = currentWidth + 'px';
 				} else if (_fillGapMethod === 'width') {
@@ -283,19 +354,31 @@ var ScrollLock = function () {
 				} else {
 					element.style.paddingRight = currentWidth + 'px';
 				}
-			});
+			}
 		}
 	}, {
 		key: '_unfillGaps',
 		value: function _unfillGaps() {
+			var _this4 = this;
+
 			var selector = generateSelector(_fillGapSelectors);
 			var elements = document.querySelectorAll(selector);
 
 			eachNode(elements, function (element) {
+				return _this4._unfillGapsElement(element);
+			});
+			eachNode(_fillGapTargets, function (element) {
+				return _this4._unfillGapsElement(element);
+			});
+		}
+	}, {
+		key: '_unfillGapsElement',
+		value: function _unfillGapsElement(element) {
+			if (element instanceof Element) {
 				element.style.marginRight = '';
 				element.style.width = '';
 				element.style.paddingRight = '';
-			});
+			}
 		}
 	}]);
 
