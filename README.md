@@ -69,7 +69,7 @@ Live example: https://fl3nkey.github.io/scroll-lock/demos/fill_gap.html
 Example sources: https://codepen.io/FL3NKEY/pen/JLeJqY
 
 ## Methods
-### hide()
+### hide(targets)
 Hide body scrollbar and disable scroll.
 <br>
 **Type:** Element or Array
