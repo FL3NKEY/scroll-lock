@@ -69,8 +69,9 @@ Live example: https://fl3nkey.github.io/scroll-lock/demos/fill_gap.html
 Example sources: https://codepen.io/FL3NKEY/pen/JLeJqY
 
 ## Queue
-Calling `scrollLock.hide()` and `scrollLock.show()` methods create queue calls. What i mean, if you call `scrollLock.hide()` method **twice in a row** and after `scrollLock.show()` method, scrollbar will not showed, because `scrollLock.show()` method will need to **call twice also**.
-if you need show scrollbar without queue, use `scrollLock.clearQueue()` method:
+Calling the `scrollLock.hide()` and `scrollLock.show()` methods creates a call queue. What I want to inform: if you call the `scrollLock.hide()` method twice in a row, and then `scrollLock.show()`, scrollbar is not activated, since the `scrollLock.show()` method will need to be called a second time.
+<br>
+If for some reason you need to activate the scrollbar out of turn, use the `scrollLock.clearQueue()` method:
 ``` js
 scrollLock.clearQueue().show();
 ```
