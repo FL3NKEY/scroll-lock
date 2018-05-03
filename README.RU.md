@@ -65,6 +65,14 @@ scrollLock.hide($scrollableTarget);
 <br>
 Исходники примера: https://codepen.io/FL3NKEY/pen/JLeJqY
 
+## Очередь
+Вызов методов `scrollLock.hide()` и `scrollLock.show()` создает очередь вызовов. Что я хочу донести, если вы вызовите метод `scrollLock.hide()` **два раза подряд**, а потом `scrollLock.show()`, скроллбар не активируется, т.к. метод `scrollLock.show()` нужно будет **вызвать второй раз**.
+<br>
+Если вам по каким то причинам надо активировать скролбар вне очереди, используйте метод `scrollLock.clearQueue()`:
+``` js
+scrollLock.clearQueue().show();
+```
+
 ## Методы
 ### hide(targets)
 Скрытие полосы прокрутки и отключение скроллинга.
@@ -147,4 +155,11 @@ scrollLock.setFillGapSelectors(['body', '.some-element', '#another-element']);
 **Тип:** Element или Array
 ``` js
 scrollLock.setFillGapTargets($someElement);
+```
+
+
+### clearQueue()
+Очищает значение очереди.
+``` js
+scrollLock.clearQueue();
 ```

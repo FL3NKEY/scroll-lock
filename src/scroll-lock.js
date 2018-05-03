@@ -5,6 +5,7 @@ const DELTA_DATASET = 'slDelta';
 const FILLGAP_AVAILABLE_METHODS = ['padding', 'margin', 'width'];
 
 let _state = true;
+let _queue = 0;
 
 let _scrollableTargets = [];
 let _temporaryScrollableTargets = [];
@@ -104,18 +105,33 @@ class ScrollLock {
 	}
 
 	hide(targets) {
+		if (_queue <= 0) {
+			this._fillGaps();
+			document.body.style.overflow = 'hidden';
+			_state = false;
+		}
+
 		this._setTemporaryScrollableTargets(targets);
-		this._fillGaps();
-		document.body.style.overflow = 'hidden';
-		_state = false;
+		_queue++;
 
 		return this;
 	}
 
 	show() {
-		document.body.style.overflow = '';
-		this._unfillGaps();
-		_state = true;
+		_queue--;
+		if (_queue <= 0) {
+			document.body.style.overflow = '';
+			this._unfillGaps();
+			_state = true;
+		} else {
+			this.clearQueue();
+		}
+
+		return this;
+	}
+
+	clearQueue() {
+		_queue = 0;
 
 		return this;
 	}

@@ -95,6 +95,7 @@ var DELTA_DATASET = 'slDelta';
 var FILLGAP_AVAILABLE_METHODS = ['padding', 'margin', 'width'];
 
 var _state = true;
+var _queue = 0;
 
 var _scrollableTargets = [];
 var _temporaryScrollableTargets = [];
@@ -205,19 +206,35 @@ var ScrollLock = function () {
 	}, {
 		key: 'hide',
 		value: function hide(targets) {
+			if (_queue <= 0) {
+				this._fillGaps();
+				document.body.style.overflow = 'hidden';
+				_state = false;
+			}
+
 			this._setTemporaryScrollableTargets(targets);
-			this._fillGaps();
-			document.body.style.overflow = 'hidden';
-			_state = false;
+			_queue++;
 
 			return this;
 		}
 	}, {
 		key: 'show',
 		value: function show() {
-			document.body.style.overflow = '';
-			this._unfillGaps();
-			_state = true;
+			_queue--;
+			if (_queue <= 0) {
+				document.body.style.overflow = '';
+				this._unfillGaps();
+				_state = true;
+			} else {
+				this.clearQueue();
+			}
+
+			return this;
+		}
+	}, {
+		key: 'clearQueue',
+		value: function clearQueue() {
+			_queue = 0;
 
 			return this;
 		}
