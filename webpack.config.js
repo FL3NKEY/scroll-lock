@@ -21,6 +21,7 @@ if(isProduction) {
 webpack_config.output = {
 	path: path.resolve(__dirname, 'dist'),
 	filename: '[name].js',
+	library: 'scrollLock',
 	libraryTarget: 'umd',
 };
 

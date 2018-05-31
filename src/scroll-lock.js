@@ -263,4 +263,6 @@ class ScrollLock {
 	}
 }
 
-export const scrollLock = new ScrollLock();
+const scrollLock = new ScrollLock();
+export default scrollLock;
+module.exports = scrollLock;
