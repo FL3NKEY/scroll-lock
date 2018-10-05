@@ -185,6 +185,8 @@ var bindEvents = function bindEvents(scrollLock) {
 	});
 	document.addEventListener('touchmove', function (e) {
 		return touchmoveEventHandler(e, scrollLock);
+	}, {
+		passive: false
 	});
 	document.addEventListener('touchend', function (e) {
 		return touchendEventHandler(e, scrollLock);

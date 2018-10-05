@@ -91,7 +91,9 @@ const touchendEventHandler = (e, scrollLock) => {
 
 const bindEvents = (scrollLock) => {
 	document.addEventListener('touchstart', (e) => touchstartEventHandler(e, scrollLock));
-	document.addEventListener('touchmove', (e) => touchmoveEventHandler(e, scrollLock));
+	document.addEventListener('touchmove', (e) => touchmoveEventHandler(e, scrollLock), {
+		passive: false
+	});
 	document.addEventListener('touchend', (e) => touchendEventHandler(e, scrollLock));
 };
 
