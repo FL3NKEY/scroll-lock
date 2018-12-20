@@ -2,7 +2,8 @@
 A Javascript utility library for the native scrollbar. Also preventing scroll in iOS and another touch devices.
 <br>
 <br>
-[README на русском](https://github.com/FL3NKEY/scroll-lock/blob/master/README.RU.md).
++ [How to fight the \<body\> scroll by Anton Korzunov](https://medium.com/react-camp/how-to-fight-the-body-scroll-2b00267b37ac)
++ [README на русском](https://github.com/FL3NKEY/scroll-lock/blob/master/README.RU.md)
 ## Install
 **Via npm** `npm install scroll-lock --save`
 
