@@ -4,84 +4,148 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>scroll-lock</title>
-	<style>
-		.container {
-			height: 150vh;
-		}
-		.modal {
-			display: none;
-			position: fixed;
-			left: 0;
-			top: 0;
-			height: 100%;
-			width: 100%;
-			z-index: 100;
-			background-color: rgba(0, 0, 0, 0.6);
-			overflow: hidden;
-		}
-		.modal-scroll {
-			position: fixed;
-			left: 0;
-			top: 0;
-			height: 100%;
-			width: 100%;
-			z-index: 100;
-			background-color: rgba(0, 0, 0, 0.2);
-			overflow: auto;
-			-webkit-overflow-scrolling: touch;
-		}
-		.modal-content {
-			max-width: 400px;
-			height: 200vh;
-			background-color: #fff;
-			margin: 40px auto;
-			padding: 20px;
-		}
-	</style>
+	<title>Scroll-lock Demo</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css">
+	<link rel="stylesheet" href="./../demos/index.css">
 </head>
 <body>
-	<div class="container">
-		<h1>Scroll this container!</h1>
-		<button id="openmodal">Open Modal</button>
-	</div>
-	<div class="modal" id="modal">
-		<div class="modal-scroll sl--scrollable">
-			<div class="modal-content">
-				<h1>Scroll this modal!</h1>
-				<button id="closemodal">Close Modal</button>
-				<p>
-					<input type="text" placeholder="Type some...">
-				</p>
-				<p>
-					<select>
-						<option disabled selected>Select some...</option>
-						<option>ooyyy</option>
-						<option>lmao</option>
-						<option>privet</option>
-					</select>
-				</p>
+	<div class="uk-section">
+		<div class="uk-container">
+			<h1>Scroll-lock Demo</h1>
+			<p class="uk-text-meta">There is a lot of demos what scroll-lock can be do.</p>
+
+			<div class="uk-section uk-section-small" id="disable-scroll-bar">
+				<div class="uk-card uk-card-default uk-card-small">
+					<div class="uk-card-header">
+						<h2 class="uk-card-title">disableScrollBar()</h2>
+					</div>
+					<div class="uk-card-body">
+						<p class="uk-text-meta">scrollable target</p>
+						<div class="uk-panel uk-panel-scrollable" data-scroll-lock-scrollable>
+							<div style="width: 150%;">
+								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+								<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+								<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+							</div>
+						</div>
+						<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Scroll is enabled</div>
+						<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Scroll is disabled</div>
+					</div>
+					<div class="uk-card-footer">
+						<div class="uk-button-group">
+							<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
+							<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="uk-section uk-section-small" id="disable-scroll-bar-with-inputs">
+				<div class="uk-card uk-card-default uk-card-small">
+					<div class="uk-card-header">
+						<h2 class="uk-card-title">disableScrollBar() <span class="uk-text-muted">with inputs in scrollable target</span></h2>
+					</div>
+					<div class="uk-card-body">
+						<p class="uk-text-meta">scrollable target</p>
+						<div class="uk-panel uk-panel-scrollable" data-scroll-lock-scrollable>
+							<div>
+								<p class="uk-text-meta">textarea</p>
+								<textarea class="uk-textarea" rows="3">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</textarea>
+								<p class="uk-text-meta">contenteditable</p>
+								<div contenteditable="true" class="uk-textarea" style="height: 120px;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+							</div>
+						</div>
+						<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Scroll is enabled</div>
+						<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Scroll is disabled</div>
+					</div>
+					<div class="uk-card-footer">
+						<div class="uk-button-group">
+							<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
+							<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="uk-section uk-section-small" id="disable-scroll-bar-with-deep">
+				<div class="uk-card uk-card-default uk-card-small">
+					<div class="uk-card-header">
+						<h2 class="uk-card-title">disableScrollBar() <span class="uk-text-muted">with deep scrollable targets</span></h2>
+					</div>
+					<div class="uk-card-body">
+						<p class="uk-text-meta">scrollable target</p>
+						<div class="uk-panel uk-panel-scrollable" data-scroll-lock-scrollable>
+							<div>
+								<h4>1</h4>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque? Voluptatibus.</p>
+								<p class="uk-text-meta">scrollable target</p>
+								<div class="uk-panel uk-panel-scrollable uk-background-muted" data-scroll-lock-scrollable>
+									<div>
+										<h4>2</h4>
+										<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque? Voluptatibus.</p>
+										<p class="uk-text-meta">scrollable target</p>
+										<div class="uk-panel uk-panel-scrollable uk-background-secondary uk-light" data-scroll-lock-scrollable>
+											<div>
+												<h4>3</h4>
+												<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque? Voluptatibus.</p>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Scroll is enabled</div>
+						<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Scroll is disabled</div>
+					</div>
+					<div class="uk-card-footer">
+						<div class="uk-button-group">
+							<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
+							<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="uk-section uk-section-small" id="fill-gap-example">
+				<div class="uk-card uk-card-default uk-card-small" style="position: static;">
+					<div class="uk-card-header">
+						<h2 class="uk-card-title">Fill Gap example</h2>
+					</div>
+					<div class="uk-card-body">
+						<p class="uk-text-meta">elements with <code>position: fixed;</code>.
+						<div class="demo-head">
+							<div class="demo-head__item uk-background-muted" data-scroll-lock-fill-gap>Demo element with fill gap</div>
+							<div class="demo-head__item uk-background-muted uk-text-muted">Demo element without fill gap</div>
+						</div>
+						<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Scroll is enabled</div>
+						<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Scroll is disabled</div>
+					</div>
+					<div class="uk-card-footer">
+						<label class="uk-text-method">fill gap method:</label>
+						<select class="uk-select" data-demo-fill-gap-method-select>
+							<option value="padding">padding</option>
+							<option value="margin">margin</option>
+							<option value="width">width</option>
+							<option value="max-width">max-width</option>
+						</select>
+					</div>
+					<div class="uk-card-footer">
+						<div class="uk-button-group">
+							<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
+							<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+
+	<a href="https://github.com/FL3NKEY/scroll-lock" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
 	<script src="./../dist/scroll-lock.js"></script>
-	<script>
-		$open = document.getElementById('openmodal');
-		$close = document.getElementById('closemodal');
-		$modal = document.getElementById('modal');
-
-		function open() {
-			scrollLock.hide();
-			$modal.style.display = 'block';
-		}
-
-		function close() {
-			$modal.style.display = 'none';
-			scrollLock.show();
-		}
-
-		$open.addEventListener('click', open);
-		$close.addEventListener('click', close);
-	</script>
+	<script src="./../demos/index.js"></script>
 </body>
 </html>
