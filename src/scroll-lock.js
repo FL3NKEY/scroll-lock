@@ -1,9 +1,9 @@
 import {
 	eachNode,
-	argumentToArray,
+	argumentAsArray,
 	isElement,
 	throwError,
-	arrayToSelector,
+	arrayAsSelector,
 	findParentBySelector,
 	elementScrollTopOnStart,
 	elementScrollTopOnEnd,
@@ -13,56 +13,55 @@ import {
 	elementHasSelector
 } from './tools';
 
-const FILL_GAP_AVAILABLE_METHODS = ['padding', 'margin', 'width', 'max-width'];
+const FILL_GAP_AVAILABLE_METHODS = ['padding', 'margin', 'width', 'max-width', 'none'];
 const TOUCH_DIRECTION_DETECT_OFFSET = 3;
 
 const state = {
-	scrollBar: true,
+	scroll: true,
 	queue: 0,
 	scrollableSelectors: ['[data-scroll-lock-scrollable]'],
 	fillGapSelectors: ['body', '[data-scroll-lock-fill-gap]'],
 	fillGapMethod: FILL_GAP_AVAILABLE_METHODS[0],
 	//
 	startTouchY: 0,
-	startTouchX: 0,
-	touchMoveProcessed: false
+	startTouchX: 0
 };
 
-export const disableScrollBar = (target) => {
+export const disablePageScroll = (target) => {
 	if (state.queue <= 0) {
 		fillGaps();
 		document.body.style.overflow = 'hidden';
-		state.scrollBar = false;
+		state.scroll = false;
 	}
 
 	addScrollableTarget(target);
 	state.queue++;
 };
-export const enableScrollBar = (target) => {
+export const enablePageScroll = (target) => {
 	state.queue--;
 	if (state.queue <= 0) {
 		document.body.style.overflow = '';
 		unfillGaps();
-		state.scrollBar = true;
+		state.scroll = true;
 	}
 
 	removeScrollableTarget(target);
 };
-export const getScrollBarState = () => {
-	return state.scrollBar;
+export const getScrollState = () => {
+	return state.scroll;
 };
-export const clearQueueLocks = () => {
+export const clearQueueScrollLocks = () => {
 	state.queue = 0;
 };
-export const getScrollBarWidth = () => {
+export const getPageScrollBarWidth = () => {
 	const overflowCurrentProperty = document.body.style.overflow;
 	document.body.style.overflow = 'scroll';
-	const width = getCurrentScrollBarWidth();
+	const width = getCurrentPageScrollBarWidth();
 	document.body.style.overflow = overflowCurrentProperty;
 
 	return width;
 };
-export const getCurrentScrollBarWidth = () => {
+export const getCurrentPageScrollBarWidth = () => {
 	const documentWidth = document.documentElement.clientWidth;
 	const windowWidth = window.innerWidth;
 	const currentWidth = windowWidth - documentWidth;
@@ -71,7 +70,7 @@ export const getCurrentScrollBarWidth = () => {
 };
 export const addScrollableTarget = (target) => {
 	if (target) {
-		const targets = argumentToArray(target);
+		const targets = argumentAsArray(target);
 		targets.map(($targets) => {
 			eachNode($targets, ($target) => {
 				if (isElement($target)) {
@@ -85,7 +84,7 @@ export const addScrollableTarget = (target) => {
 };
 export const removeScrollableTarget = (target) => {
 	if (target) {
-		const targets = argumentToArray(target);
+		const targets = argumentAsArray(target);
 		targets.map(($targets) => {
 			eachNode($targets, ($target) => {
 				if (isElement($target)) {
@@ -99,7 +98,7 @@ export const removeScrollableTarget = (target) => {
 };
 export const addScrollableSelector = (selector) => {
 	if (selector) {
-		const selectors = argumentToArray(selector);
+		const selectors = argumentAsArray(selector);
 		selectors.map((selector) => {
 			state.scrollableSelectors.push(selector);
 		});
@@ -107,7 +106,7 @@ export const addScrollableSelector = (selector) => {
 };
 export const removeScrollableSelector = (selector) => {
 	if (selector) {
-		const selectors = argumentToArray(selector);
+		const selectors = argumentAsArray(selector);
 		selectors.map((selector) => {
 			state.scrollableSelectors = state.scrollableSelectors.filter((sSelector) => sSelector !== selector);
 		});
@@ -126,12 +125,12 @@ export const setFillGapMethod = (method) => {
 };
 export const addFillGapTarget = (target) => {
 	if (target) {
-		const targets = argumentToArray(target);
+		const targets = argumentAsArray(target);
 		targets.map(($targets) => {
 			eachNode($targets, ($target) => {
 				if (isElement($target)) {
 					$target.dataset.scrollLockFillGap = '';
-					if (!state.scrollBar) {
+					if (!state.scroll) {
 						fillGapTarget($target);
 					}
 				} else {
@@ -143,12 +142,12 @@ export const addFillGapTarget = (target) => {
 };
 export const removeFillGapTarget = (target) => {
 	if (target) {
-		const targets = argumentToArray(target);
+		const targets = argumentAsArray(target);
 		targets.map(($targets) => {
 			eachNode($targets, ($target) => {
 				if (isElement($target)) {
 					delete $target.dataset.scrollLockFillGap;
-					if (!state.scrollBar) {
+					if (!state.scroll) {
 						unfillGapTarget($target);
 					}
 				} else {
@@ -160,10 +159,10 @@ export const removeFillGapTarget = (target) => {
 };
 export const addFillGapSelector = (selector) => {
 	if (selector) {
-		const selectors = argumentToArray(selector);
+		const selectors = argumentAsArray(selector);
 		selectors.map((selector) => {
 			state.fillGapSelectors.push(selector);
-			if (!state.scrollBar) {
+			if (!state.scroll) {
 				fillGapSelector(selector);
 			}
 		});
@@ -171,27 +170,28 @@ export const addFillGapSelector = (selector) => {
 };
 export const removeFillGapSelector = (selector) => {
 	if (selector) {
-		const selectors = argumentToArray(selector);
+		const selectors = argumentAsArray(selector);
 		selectors.map((selector) => {
 			state.fillGapSelectors = fillGapSelectors.scrollableSelectors.filter((fSelector) => fSelector !== selector);
-			if (!state.scrollBar) {
+			if (!state.scroll) {
 				unfillGapSelector(selector);
 			}
 		});
 	}
 };
+
 export const refillGaps = () => {
-	if (!state.scrollBar) {
+	if (!state.scroll) {
 		fillGaps();
 	}
 };
 
 const fillGaps = () => {
-	const selector = arrayToSelector(state.fillGapSelectors);
+	const selector = arrayAsSelector(state.fillGapSelectors);
 	fillGapSelector(selector);
 };
 const unfillGaps = () => {
-	const selector = arrayToSelector(state.fillGapSelectors);
+	const selector = arrayAsSelector(state.fillGapSelectors);
 	unfillGapSelector(selector);
 };
 const fillGapSelector = (selector) => {
@@ -201,7 +201,7 @@ const fillGapSelector = (selector) => {
 	});
 };
 const fillGapTarget = ($target) => {
-	const scrollBarWidth = getScrollBarWidth();
+	const scrollBarWidth = getPageScrollBarWidth();
 
 	if (isElement($target)) {
 		if ($target.dataset.scrollLockFilledGap === 'true') {
@@ -219,7 +219,7 @@ const fillGapTarget = ($target) => {
 			$target.style.width = `calc(100% - ${scrollBarWidth}px)`;
 		} else if (state.fillGapMethod === 'max-width') {
 			$target.style.maxWidth = `calc(100% - ${scrollBarWidth}px)`;
-		} else {
+		} else if (state.fillGapMethod === 'padding') {
 			const currentPadding = parseFloat(computedStyle.paddingRight);
 			$target.style.paddingRight = `${currentPadding + scrollBarWidth}px`;
 		}
@@ -244,7 +244,7 @@ const unfillGapTarget = ($target) => {
 				$target.style.width = ``;
 			} else if (currentFillGapMethod === 'max-width') {
 				$target.style.maxWidth = ``;
-			} else {
+			} else if (currentFillGapMethod === 'padding') {
 				$target.style.paddingRight = ``;
 			}
 		}
@@ -252,26 +252,23 @@ const unfillGapTarget = ($target) => {
 };
 
 const onResize = (e) => {
-	if (!state.scrollBar) {
-		fillGaps();
-	}
+	refillGaps();
 };
+
 const onTouchStart = (e) => {
-	if (!state.scrollBar) {
+	if (!state.scroll) {
 		state.startTouchY = e.touches[0].clientY;
 		state.startTouchX = e.touches[0].clientX;
-		state.touchMoveProcessed = false;
 	}
 };
 const onTouchMove = (e) => {
-	if (!state.scrollBar && !state.touchMoveProcessed) {
-		const startTouchY = state.startTouchY;
-		const startTouchX = state.startTouchX;
+	if (!state.scroll) {
+		const { startTouchY, startTouchX } = state;
 		const currentClientY = e.touches[0].clientY;
 		const currentClientX = e.touches[0].clientX;
 
 		if (e.touches.length < 2) {
-			const selector = arrayToSelector(state.scrollableSelectors);
+			const selector = arrayAsSelector(state.scrollableSelectors);
 			const direction = {
 				up: startTouchY < currentClientY,
 				down: startTouchY > currentClientY,
@@ -319,6 +316,7 @@ const onTouchMove = (e) => {
 							if (parentScrollableEl) {
 								handle(parentScrollableEl, true);
 							} else {
+								console.log('prevented');
 								e.preventDefault();
 							}
 						}
@@ -331,15 +329,13 @@ const onTouchMove = (e) => {
 			};
 
 			handle(e.target);
-			state.touchMoveProcessed = true;
 		}
 	}
 };
 const onTouchEnd = (e) => {
-	if (!state.scrollBar) {
+	if (!state.scroll) {
 		state.startTouchY = 0;
 		state.startTouchX = 0;
-		state.touchMoveProcessed = false;
 	}
 };
 
@@ -351,20 +347,29 @@ document.addEventListener('touchmove', onTouchMove, {
 document.addEventListener('touchend', onTouchEnd);
 
 const scrollLock = {
-	disableScrollBar,
-	enableScrollBar,
-	getScrollBarState,
-	clearQueueLocks,
-	getScrollBarWidth,
-	getCurrentScrollBarWidth,
+	disablePageScroll,
+	enablePageScroll,
+
+	getScrollState,
+	clearQueueScrollLocks,
+	getPageScrollBarWidth,
+	getCurrentPageScrollBarWidth,
+
 	addScrollableSelector,
 	removeScrollableSelector,
-	setFillGapMethod,
-	addFillGapTarget,
-	removeFillGapTarget,
+
+	addScrollableTarget,
+	removeScrollableTarget,
+
 	addFillGapSelector,
 	removeFillGapSelector,
+
+	addFillGapTarget,
+	removeFillGapTarget,
+
+	setFillGapMethod,
 	refillGaps,
+
 	_state: state
 };
 

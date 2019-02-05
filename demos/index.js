@@ -32,14 +32,14 @@ var enableStates = function() {
 };
 
 var disableScroll = function() {
-	if (scrollLock.getScrollBarState()) {
-		scrollLock.disableScrollBar();
+	if (scrollLock.getScrollState()) {
+		scrollLock.disablePageScroll();
 		disableStates();
 	}
 };
 var enableScroll = function() {
-	if (!scrollLock.getScrollBarState()) {
-		scrollLock.enableScrollBar();
+	if (!scrollLock.getScrollState()) {
+		scrollLock.enablePageScroll();
 		enableStates();
 	}
 };

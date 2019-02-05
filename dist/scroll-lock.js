@@ -102,7 +102,7 @@ return /******/ (function(modules) { // webpackBootstrap
 __webpack_require__.r(__webpack_exports__);
 
 // CONCATENATED MODULE: ./src/tools.js
-var argumentToArray = function argumentToArray(argument) {
+var argumentAsArray = function argumentAsArray(argument) {
   return Array.isArray(argument) ? argument : [argument];
 };
 var isElement = function isElement(target) {
@@ -125,7 +125,7 @@ var eachNode = function eachNode(nodeList, callback) {
 var throwError = function throwError(message) {
   return console.error("[scroll-lock] ".concat(message));
 };
-var arrayToSelector = function arrayToSelector(array) {
+var arrayAsSelector = function arrayAsSelector(array) {
   if (Array.isArray(array)) {
     var selector = array.join(', ');
     return selector;
@@ -190,12 +190,12 @@ var elementIsScrollableField = function elementIsScrollableField($el) {
   return elementHasSelector($el, selector);
 };
 // CONCATENATED MODULE: ./src/scroll-lock.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "disableScrollBar", function() { return disableScrollBar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enableScrollBar", function() { return enableScrollBar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getScrollBarState", function() { return getScrollBarState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clearQueueLocks", function() { return clearQueueLocks; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getScrollBarWidth", function() { return getScrollBarWidth; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCurrentScrollBarWidth", function() { return getCurrentScrollBarWidth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "disablePageScroll", function() { return disablePageScroll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePageScroll", function() { return enablePageScroll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getScrollState", function() { return getScrollState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clearQueueScrollLocks", function() { return clearQueueScrollLocks; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPageScrollBarWidth", function() { return getPageScrollBarWidth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCurrentPageScrollBarWidth", function() { return getCurrentPageScrollBarWidth; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addScrollableTarget", function() { return scroll_lock_addScrollableTarget; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeScrollableTarget", function() { return scroll_lock_removeScrollableTarget; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addScrollableSelector", function() { return scroll_lock_addScrollableSelector; });
@@ -207,54 +207,53 @@ var elementIsScrollableField = function elementIsScrollableField($el) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeFillGapSelector", function() { return scroll_lock_removeFillGapSelector; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "refillGaps", function() { return refillGaps; });
 
-var FILL_GAP_AVAILABLE_METHODS = ['padding', 'margin', 'width', 'max-width'];
+var FILL_GAP_AVAILABLE_METHODS = ['padding', 'margin', 'width', 'max-width', 'none'];
 var TOUCH_DIRECTION_DETECT_OFFSET = 3;
 var state = {
-  scrollBar: true,
+  scroll: true,
   queue: 0,
   scrollableSelectors: ['[data-scroll-lock-scrollable]'],
   fillGapSelectors: ['body', '[data-scroll-lock-fill-gap]'],
   fillGapMethod: FILL_GAP_AVAILABLE_METHODS[0],
   //
   startTouchY: 0,
-  startTouchX: 0,
-  touchMoveProcessed: false
+  startTouchX: 0
 };
-var disableScrollBar = function disableScrollBar(target) {
+var disablePageScroll = function disablePageScroll(target) {
   if (state.queue <= 0) {
     scroll_lock_fillGaps();
     document.body.style.overflow = 'hidden';
-    state.scrollBar = false;
+    state.scroll = false;
   }
 
   scroll_lock_addScrollableTarget(target);
   state.queue++;
 };
-var enableScrollBar = function enableScrollBar(target) {
+var enablePageScroll = function enablePageScroll(target) {
   state.queue--;
 
   if (state.queue <= 0) {
     document.body.style.overflow = '';
     scroll_lock_unfillGaps();
-    state.scrollBar = true;
+    state.scroll = true;
   }
 
   scroll_lock_removeScrollableTarget(target);
 };
-var getScrollBarState = function getScrollBarState() {
-  return state.scrollBar;
+var getScrollState = function getScrollState() {
+  return state.scroll;
 };
-var clearQueueLocks = function clearQueueLocks() {
+var clearQueueScrollLocks = function clearQueueScrollLocks() {
   state.queue = 0;
 };
-var getScrollBarWidth = function getScrollBarWidth() {
+var getPageScrollBarWidth = function getPageScrollBarWidth() {
   var overflowCurrentProperty = document.body.style.overflow;
   document.body.style.overflow = 'scroll';
-  var width = getCurrentScrollBarWidth();
+  var width = getCurrentPageScrollBarWidth();
   document.body.style.overflow = overflowCurrentProperty;
   return width;
 };
-var getCurrentScrollBarWidth = function getCurrentScrollBarWidth() {
+var getCurrentPageScrollBarWidth = function getCurrentPageScrollBarWidth() {
   var documentWidth = document.documentElement.clientWidth;
   var windowWidth = window.innerWidth;
   var currentWidth = windowWidth - documentWidth;
@@ -262,7 +261,7 @@ var getCurrentScrollBarWidth = function getCurrentScrollBarWidth() {
 };
 var scroll_lock_addScrollableTarget = function addScrollableTarget(target) {
   if (target) {
-    var targets = argumentToArray(target);
+    var targets = argumentAsArray(target);
     targets.map(function ($targets) {
       eachNode($targets, function ($target) {
         if (isElement($target)) {
@@ -276,7 +275,7 @@ var scroll_lock_addScrollableTarget = function addScrollableTarget(target) {
 };
 var scroll_lock_removeScrollableTarget = function removeScrollableTarget(target) {
   if (target) {
-    var targets = argumentToArray(target);
+    var targets = argumentAsArray(target);
     targets.map(function ($targets) {
       eachNode($targets, function ($target) {
         if (isElement($target)) {
@@ -290,7 +289,7 @@ var scroll_lock_removeScrollableTarget = function removeScrollableTarget(target)
 };
 var scroll_lock_addScrollableSelector = function addScrollableSelector(selector) {
   if (selector) {
-    var selectors = argumentToArray(selector);
+    var selectors = argumentAsArray(selector);
     selectors.map(function (selector) {
       state.scrollableSelectors.push(selector);
     });
@@ -298,7 +297,7 @@ var scroll_lock_addScrollableSelector = function addScrollableSelector(selector)
 };
 var scroll_lock_removeScrollableSelector = function removeScrollableSelector(selector) {
   if (selector) {
-    var selectors = argumentToArray(selector);
+    var selectors = argumentAsArray(selector);
     selectors.map(function (selector) {
       state.scrollableSelectors = state.scrollableSelectors.filter(function (sSelector) {
         return sSelector !== selector;
@@ -319,13 +318,13 @@ var scroll_lock_setFillGapMethod = function setFillGapMethod(method) {
 };
 var scroll_lock_addFillGapTarget = function addFillGapTarget(target) {
   if (target) {
-    var targets = argumentToArray(target);
+    var targets = argumentAsArray(target);
     targets.map(function ($targets) {
       eachNode($targets, function ($target) {
         if (isElement($target)) {
           $target.dataset.scrollLockFillGap = '';
 
-          if (!state.scrollBar) {
+          if (!state.scroll) {
             scroll_lock_fillGapTarget($target);
           }
         } else {
@@ -337,13 +336,13 @@ var scroll_lock_addFillGapTarget = function addFillGapTarget(target) {
 };
 var scroll_lock_removeFillGapTarget = function removeFillGapTarget(target) {
   if (target) {
-    var targets = argumentToArray(target);
+    var targets = argumentAsArray(target);
     targets.map(function ($targets) {
       eachNode($targets, function ($target) {
         if (isElement($target)) {
           delete $target.dataset.scrollLockFillGap;
 
-          if (!state.scrollBar) {
+          if (!state.scroll) {
             scroll_lock_unfillGapTarget($target);
           }
         } else {
@@ -355,11 +354,11 @@ var scroll_lock_removeFillGapTarget = function removeFillGapTarget(target) {
 };
 var scroll_lock_addFillGapSelector = function addFillGapSelector(selector) {
   if (selector) {
-    var selectors = argumentToArray(selector);
+    var selectors = argumentAsArray(selector);
     selectors.map(function (selector) {
       state.fillGapSelectors.push(selector);
 
-      if (!state.scrollBar) {
+      if (!state.scroll) {
         scroll_lock_fillGapSelector(selector);
       }
     });
@@ -367,31 +366,31 @@ var scroll_lock_addFillGapSelector = function addFillGapSelector(selector) {
 };
 var scroll_lock_removeFillGapSelector = function removeFillGapSelector(selector) {
   if (selector) {
-    var selectors = argumentToArray(selector);
+    var selectors = argumentAsArray(selector);
     selectors.map(function (selector) {
       state.fillGapSelectors = fillGapSelectors.scrollableSelectors.filter(function (fSelector) {
         return fSelector !== selector;
       });
 
-      if (!state.scrollBar) {
+      if (!state.scroll) {
         scroll_lock_unfillGapSelector(selector);
       }
     });
   }
 };
 var refillGaps = function refillGaps() {
-  if (!state.scrollBar) {
+  if (!state.scroll) {
     scroll_lock_fillGaps();
   }
 };
 
 var scroll_lock_fillGaps = function fillGaps() {
-  var selector = arrayToSelector(state.fillGapSelectors);
+  var selector = arrayAsSelector(state.fillGapSelectors);
   scroll_lock_fillGapSelector(selector);
 };
 
 var scroll_lock_unfillGaps = function unfillGaps() {
-  var selector = arrayToSelector(state.fillGapSelectors);
+  var selector = arrayAsSelector(state.fillGapSelectors);
   scroll_lock_unfillGapSelector(selector);
 };
 
@@ -403,7 +402,7 @@ var scroll_lock_fillGapSelector = function fillGapSelector(selector) {
 };
 
 var scroll_lock_fillGapTarget = function fillGapTarget($target) {
-  var scrollBarWidth = getScrollBarWidth();
+  var scrollBarWidth = getPageScrollBarWidth();
 
   if (isElement($target)) {
     if ($target.dataset.scrollLockFilledGap === 'true') {
@@ -421,7 +420,7 @@ var scroll_lock_fillGapTarget = function fillGapTarget($target) {
       $target.style.width = "calc(100% - ".concat(scrollBarWidth, "px)");
     } else if (state.fillGapMethod === 'max-width') {
       $target.style.maxWidth = "calc(100% - ".concat(scrollBarWidth, "px)");
-    } else {
+    } else if (state.fillGapMethod === 'padding') {
       var currentPadding = parseFloat(computedStyle.paddingRight);
       $target.style.paddingRight = "".concat(currentPadding + scrollBarWidth, "px");
     }
@@ -448,7 +447,7 @@ var scroll_lock_unfillGapTarget = function unfillGapTarget($target) {
         $target.style.width = "";
       } else if (currentFillGapMethod === 'max-width') {
         $target.style.maxWidth = "";
-      } else {
+      } else if (currentFillGapMethod === 'padding') {
         $target.style.paddingRight = "";
       }
     }
@@ -456,28 +455,25 @@ var scroll_lock_unfillGapTarget = function unfillGapTarget($target) {
 };
 
 var onResize = function onResize(e) {
-  if (!state.scrollBar) {
-    scroll_lock_fillGaps();
-  }
+  refillGaps();
 };
 
 var onTouchStart = function onTouchStart(e) {
-  if (!state.scrollBar) {
+  if (!state.scroll) {
     state.startTouchY = e.touches[0].clientY;
     state.startTouchX = e.touches[0].clientX;
-    state.touchMoveProcessed = false;
   }
 };
 
 var scroll_lock_onTouchMove = function onTouchMove(e) {
-  if (!state.scrollBar && !state.touchMoveProcessed) {
-    var startTouchY = state.startTouchY;
-    var startTouchX = state.startTouchX;
+  if (!state.scroll) {
+    var startTouchY = state.startTouchY,
+        startTouchX = state.startTouchX;
     var currentClientY = e.touches[0].clientY;
     var currentClientX = e.touches[0].clientX;
 
     if (e.touches.length < 2) {
-      var selector = arrayToSelector(state.scrollableSelectors);
+      var selector = arrayAsSelector(state.scrollableSelectors);
       var direction = {
         up: startTouchY < currentClientY,
         down: startTouchY > currentClientY,
@@ -516,6 +512,7 @@ var scroll_lock_onTouchMove = function onTouchMove(e) {
               if (parentScrollableEl) {
                 handle(parentScrollableEl, true);
               } else {
+                console.log('prevented');
                 e.preventDefault();
               }
             }
@@ -528,16 +525,14 @@ var scroll_lock_onTouchMove = function onTouchMove(e) {
       };
 
       handle(e.target);
-      state.touchMoveProcessed = true;
     }
   }
 };
 
 var onTouchEnd = function onTouchEnd(e) {
-  if (!state.scrollBar) {
+  if (!state.scroll) {
     state.startTouchY = 0;
     state.startTouchX = 0;
-    state.touchMoveProcessed = false;
   }
 };
 
@@ -548,19 +543,21 @@ document.addEventListener('touchmove', scroll_lock_onTouchMove, {
 });
 document.addEventListener('touchend', onTouchEnd);
 var scrollLock = {
-  disableScrollBar: disableScrollBar,
-  enableScrollBar: enableScrollBar,
-  getScrollBarState: getScrollBarState,
-  clearQueueLocks: clearQueueLocks,
-  getScrollBarWidth: getScrollBarWidth,
-  getCurrentScrollBarWidth: getCurrentScrollBarWidth,
+  disablePageScroll: disablePageScroll,
+  enablePageScroll: enablePageScroll,
+  getScrollState: getScrollState,
+  clearQueueScrollLocks: clearQueueScrollLocks,
+  getPageScrollBarWidth: getPageScrollBarWidth,
+  getCurrentPageScrollBarWidth: getCurrentPageScrollBarWidth,
   addScrollableSelector: scroll_lock_addScrollableSelector,
   removeScrollableSelector: scroll_lock_removeScrollableSelector,
-  setFillGapMethod: scroll_lock_setFillGapMethod,
-  addFillGapTarget: scroll_lock_addFillGapTarget,
-  removeFillGapTarget: scroll_lock_removeFillGapTarget,
+  addScrollableTarget: scroll_lock_addScrollableTarget,
+  removeScrollableTarget: scroll_lock_removeScrollableTarget,
   addFillGapSelector: scroll_lock_addFillGapSelector,
   removeFillGapSelector: scroll_lock_removeFillGapSelector,
+  addFillGapTarget: scroll_lock_addFillGapTarget,
+  removeFillGapTarget: scroll_lock_removeFillGapTarget,
+  setFillGapMethod: scroll_lock_setFillGapMethod,
   refillGaps: refillGaps,
   _state: state
 };

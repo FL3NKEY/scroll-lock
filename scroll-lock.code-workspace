@@ -9,7 +9,7 @@
 		"[javascript]": {
 			"editor.formatOnSave": true
 		},
-		"[html]": {
+		"[handlebars]": {
 			"editor.formatOnSave": true
 		}
 	}

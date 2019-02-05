@@ -1,4 +1,4 @@
-export const argumentToArray = (argument) => (Array.isArray(argument) ? argument : [argument]);
+export const argumentAsArray = (argument) => (Array.isArray(argument) ? argument : [argument]);
 export const isElement = (target) => target instanceof Node;
 export const isElementList = (nodeList) => nodeList instanceof NodeList;
 export const eachNode = (nodeList, callback) => {
@@ -12,7 +12,7 @@ export const eachNode = (nodeList, callback) => {
 	}
 };
 export const throwError = (message) => console.error(`[scroll-lock] ${message}`);
-export const arrayToSelector = (array) => {
+export const arrayAsSelector = (array) => {
 	if (Array.isArray(array)) {
 		const selector = array.join(', ');
 		return selector;
