@@ -76,7 +76,7 @@ export const addScrollableTarget = (target) => {
 				if (isElement($target)) {
 					$target.dataset.scrollLockScrollable = '';
 				} else {
-					throwError(`"${$target}" is not a Node object.`);
+					throwError(`"${$target}" is not a Element.`);
 				}
 			});
 		});
@@ -90,7 +90,7 @@ export const removeScrollableTarget = (target) => {
 				if (isElement($target)) {
 					delete $target.dataset.scrollLockScrollable;
 				} else {
-					throwError(`"${$target}" is not a Node object.`);
+					throwError(`"${$target}" is not a Element.`);
 				}
 			});
 		});
@@ -134,7 +134,7 @@ export const addFillGapTarget = (target) => {
 						fillGapTarget($target);
 					}
 				} else {
-					throwError(`"${$target}" is not a Node object.`);
+					throwError(`"${$target}" is not a Element.`);
 				}
 			});
 		});
@@ -151,7 +151,7 @@ export const removeFillGapTarget = (target) => {
 						unfillGapTarget($target);
 					}
 				} else {
-					throwError(`"${$target}" is not a Node object.`);
+					throwError(`"${$target}" is not a Element.`);
 				}
 			});
 		});
@@ -316,7 +316,6 @@ const onTouchMove = (e) => {
 							if (parentScrollableEl) {
 								handle(parentScrollableEl, true);
 							} else {
-								console.log('prevented');
 								e.preventDefault();
 							}
 						}
@@ -346,6 +345,81 @@ document.addEventListener('touchmove', onTouchMove, {
 });
 document.addEventListener('touchend', onTouchEnd);
 
+const deprecatedMethods = {
+	hide(target) {
+		throwError(
+			'"hide" is deprecated! Use "disablePageScroll" instead. \n https://github.com/FL3NKEY/scroll-lock#disablepagescrollscrollabletarget'
+		);
+
+		disablePageScroll(target);
+	},
+	show(target) {
+		throwError(
+			'"show" is deprecated! Use "enablePageScroll" instead. \n https://github.com/FL3NKEY/scroll-lock#enablepagescrollscrollabletarget'
+		);
+
+		enablePageScroll(target);
+	},
+	toggle(target) {
+		throwError('"toggle" is deprecated! Do not use it.');
+
+		if (getScrollState()) {
+			disablePageScroll();
+		} else {
+			enablePageScroll(target);
+		}
+	},
+	getState() {
+		throwError(
+			'"getState" is deprecated! Use "getScrollState" instead. \n https://github.com/FL3NKEY/scroll-lock#getscrollstate'
+		);
+
+		return getScrollState();
+	},
+	getWidth() {
+		throwError(
+			'"getWidth" is deprecated! Use "getPageScrollBarWidth" instead. \n https://github.com/FL3NKEY/scroll-lock#getpagescrollbarwidth'
+		);
+
+		return getPageScrollBarWidth();
+	},
+	getCurrentWidth() {
+		throwError(
+			'"getCurrentWidth" is deprecated! Use "getCurrentPageScrollBarWidth" instead. \n https://github.com/FL3NKEY/scroll-lock#getcurrentpagescrollbarwidth'
+		);
+
+		return getCurrentPageScrollBarWidth();
+	},
+	setScrollableTargets(target) {
+		throwError(
+			'"setScrollableTargets" is deprecated! Use "addScrollableTarget" instead. \n https://github.com/FL3NKEY/scroll-lock#addscrollabletargetscrollabletarget'
+		);
+
+		addScrollableTarget(target);
+	},
+	setFillGapSelectors(selector) {
+		throwError(
+			'"setFillGapSelectors" is deprecated! Use "addFillGapSelector" instead. \n https://github.com/FL3NKEY/scroll-lock#addfillgapselectorfillgapselector'
+		);
+
+		addFillGapSelector(selector);
+	},
+	setFillGapTargets(target) {
+		throwError(
+			'"setFillGapTargets" is deprecated! Use "addFillGapTarget" instead. \n https://github.com/FL3NKEY/scroll-lock#addfillgaptargetfillgaptarget'
+		);
+
+		addFillGapTarget(target);
+	},
+	clearQueue() {
+		throwError(
+			'"clearQueue" is deprecated! Use "clearQueueScrollLocks" instead. \n https://github.com/FL3NKEY/scroll-lock#clearqueuescrolllocks'
+		);
+
+		clearQueueScrollLocks();
+	}
+};
+
 const scrollLock = {
 	disablePageScroll,
 	enablePageScroll,
@@ -370,7 +444,9 @@ const scrollLock = {
 	setFillGapMethod,
 	refillGaps,
 
-	_state: state
+	_state: state,
+
+	...deprecatedMethods
 };
 
 export default scrollLock;

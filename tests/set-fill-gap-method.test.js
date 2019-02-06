@@ -28,7 +28,9 @@ test('set fill gap method', () => {
 	expect(scrollLock._state.fillGapMethod).toBe('none');
 	expect($fillGapTarget.dataset.scrollLockCurrentFillGapMethod).toBe('none');
 
+	const errorSpy = jest.spyOn(global.console, 'error').mockImplementation(() => {});
 	scrollLock.setFillGapMethod('unsupported value');
+	expect(errorSpy).toHaveBeenCalled();
 	expect(scrollLock._state.fillGapMethod).toBe('none');
 	expect($fillGapTarget.dataset.scrollLockCurrentFillGapMethod).toBe('none');
 });

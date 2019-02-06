@@ -1,7 +1,13 @@
-# scroll-lock [![Build Status](https://travis-ci.org/FL3NKEY/scroll-lock.svg?branch=master)](https://travis-ci.org/FL3NKEY/scroll-lock) ![](https://img.shields.io/npm/v/scroll-lock.svg?style=flat) ![](https://img.shields.io/npm/l/scroll-lock.svg?style=flat)
-Кроссбраузерная JavaScript библиотека для отключения прокрутки страницы.
-#### Лайв демо: [https://fl3nkey.github.io/scroll-lock/demos/index.ru.html](https://fl3nkey.github.io/scroll-lock/demos/index.ru.html)
-<br>
+<h1 align="center">
+  scroll-lock
+</h1>
+<p align="center">
+  <img src="https://travis-ci.org/FL3NKEY/scroll-lock.svg?branch=master">
+  <img src="https://img.shields.io/npm/v/scroll-lock.svg?style=flat">
+  <img src="https://img.shields.io/npm/l/scroll-lock.svg?style=flat">
+</p>
+<h4 align="center">Кроссбраузерная JavaScript библиотека для отключения прокрутки страницы</h4>
+<p align="center"><a href="https://fl3nkey.github.io/scroll-lock/demos/index.ru.html" rel="nofollow"><b>Лайв демо</b></a></p>
 
 ## Новые возможности 2.0
 * Более придвинутый алгоритм обработки touch событий
@@ -264,7 +270,7 @@ removeFillGapTarget($fillGapElement);
 ```
 
 #### ```setFillGapMethod(fillGapMethod)```
-Возвращает пробел у элемента.
+Изменяет метод заполнения пробела.
 <br>
 * ```fillGapMethod``` - (```String: 'padding', 'margin', 'width', 'max-width', 'none'```) метод заполнения пробела
 <br> **Стандартное значение:** ```padding```

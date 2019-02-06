@@ -36,14 +36,29 @@ export const elementHasSelector = ($el, selector, $root = document) => {
 	const has = nodeListAsArray($root.querySelectorAll(selector)).indexOf($el) !== -1;
 	return has;
 };
+export const elementHasOverflowHidden = ($el) => {
+	if ($el) {
+		const computedStyle = getComputedStyle($el);
+		const overflowIsHidden = computedStyle.overflow === 'hidden';
+		return overflowIsHidden;
+	}
+};
 export const elementScrollTopOnStart = ($el) => {
 	if ($el) {
+		if (elementHasOverflowHidden($el)) {
+			return true;
+		}
+
 		const scrollTop = $el.scrollTop;
 		return scrollTop <= 0;
 	}
 };
 export const elementScrollTopOnEnd = ($el) => {
 	if ($el) {
+		if (elementHasOverflowHidden($el)) {
+			return true;
+		}
+
 		const scrollTop = $el.scrollTop;
 		const scrollHeight = $el.scrollHeight;
 		const scrollTopWithHeight = scrollTop + $el.offsetHeight;
@@ -52,12 +67,20 @@ export const elementScrollTopOnEnd = ($el) => {
 };
 export const elementScrollLeftOnStart = ($el) => {
 	if ($el) {
+		if (elementHasOverflowHidden($el)) {
+			return true;
+		}
+
 		const scrollLeft = $el.scrollLeft;
 		return scrollLeft <= 0;
 	}
 };
 export const elementScrollLeftOnEnd = ($el) => {
 	if ($el) {
+		if (elementHasOverflowHidden($el)) {
+			return true;
+		}
+
 		const scrollLeft = $el.scrollLeft;
 		const scrollWidth = $el.scrollWidth;
 		const scrollLeftWithWidth = scrollLeft + $el.offsetWidth;

@@ -157,14 +157,29 @@ var elementHasSelector = function elementHasSelector($el, selector) {
   var has = nodeListAsArray($root.querySelectorAll(selector)).indexOf($el) !== -1;
   return has;
 };
+var elementHasOverflowHidden = function elementHasOverflowHidden($el) {
+  if ($el) {
+    var computedStyle = getComputedStyle($el);
+    var overflowIsHidden = computedStyle.overflow === 'hidden';
+    return overflowIsHidden;
+  }
+};
 var elementScrollTopOnStart = function elementScrollTopOnStart($el) {
   if ($el) {
+    if (elementHasOverflowHidden($el)) {
+      return true;
+    }
+
     var scrollTop = $el.scrollTop;
     return scrollTop <= 0;
   }
 };
 var elementScrollTopOnEnd = function elementScrollTopOnEnd($el) {
   if ($el) {
+    if (elementHasOverflowHidden($el)) {
+      return true;
+    }
+
     var scrollTop = $el.scrollTop;
     var scrollHeight = $el.scrollHeight;
     var scrollTopWithHeight = scrollTop + $el.offsetHeight;
@@ -173,12 +188,20 @@ var elementScrollTopOnEnd = function elementScrollTopOnEnd($el) {
 };
 var elementScrollLeftOnStart = function elementScrollLeftOnStart($el) {
   if ($el) {
+    if (elementHasOverflowHidden($el)) {
+      return true;
+    }
+
     var scrollLeft = $el.scrollLeft;
     return scrollLeft <= 0;
   }
 };
 var elementScrollLeftOnEnd = function elementScrollLeftOnEnd($el) {
   if ($el) {
+    if (elementHasOverflowHidden($el)) {
+      return true;
+    }
+
     var scrollLeft = $el.scrollLeft;
     var scrollWidth = $el.scrollWidth;
     var scrollLeftWithWidth = scrollLeft + $el.offsetWidth;
@@ -206,6 +229,10 @@ var elementIsScrollableField = function elementIsScrollableField($el) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFillGapSelector", function() { return scroll_lock_addFillGapSelector; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeFillGapSelector", function() { return scroll_lock_removeFillGapSelector; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "refillGaps", function() { return refillGaps; });
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var FILL_GAP_AVAILABLE_METHODS = ['padding', 'margin', 'width', 'max-width', 'none'];
 var TOUCH_DIRECTION_DETECT_OFFSET = 3;
@@ -267,7 +294,7 @@ var scroll_lock_addScrollableTarget = function addScrollableTarget(target) {
         if (isElement($target)) {
           $target.dataset.scrollLockScrollable = '';
         } else {
-          throwError("\"".concat($target, "\" is not a Node object."));
+          throwError("\"".concat($target, "\" is not a Element."));
         }
       });
     });
@@ -281,7 +308,7 @@ var scroll_lock_removeScrollableTarget = function removeScrollableTarget(target)
         if (isElement($target)) {
           delete $target.dataset.scrollLockScrollable;
         } else {
-          throwError("\"".concat($target, "\" is not a Node object."));
+          throwError("\"".concat($target, "\" is not a Element."));
         }
       });
     });
@@ -328,7 +355,7 @@ var scroll_lock_addFillGapTarget = function addFillGapTarget(target) {
             scroll_lock_fillGapTarget($target);
           }
         } else {
-          throwError("\"".concat($target, "\" is not a Node object."));
+          throwError("\"".concat($target, "\" is not a Element."));
         }
       });
     });
@@ -346,7 +373,7 @@ var scroll_lock_removeFillGapTarget = function removeFillGapTarget(target) {
             scroll_lock_unfillGapTarget($target);
           }
         } else {
-          throwError("\"".concat($target, "\" is not a Node object."));
+          throwError("\"".concat($target, "\" is not a Element."));
         }
       });
     });
@@ -512,7 +539,6 @@ var scroll_lock_onTouchMove = function onTouchMove(e) {
               if (parentScrollableEl) {
                 handle(parentScrollableEl, true);
               } else {
-                console.log('prevented');
                 e.preventDefault();
               }
             }
@@ -542,7 +568,55 @@ document.addEventListener('touchmove', scroll_lock_onTouchMove, {
   passive: false
 });
 document.addEventListener('touchend', onTouchEnd);
-var scrollLock = {
+var deprecatedMethods = {
+  hide: function hide(target) {
+    throwError('"hide" is deprecated! Use "disablePageScroll" instead. \n https://github.com/FL3NKEY/scroll-lock#disablepagescrollscrollabletarget');
+    disablePageScroll(target);
+  },
+  show: function show(target) {
+    throwError('"show" is deprecated! Use "enablePageScroll" instead. \n https://github.com/FL3NKEY/scroll-lock#enablepagescrollscrollabletarget');
+    enablePageScroll(target);
+  },
+  toggle: function toggle(target) {
+    throwError('"toggle" is deprecated! Do not use it.');
+
+    if (getScrollState()) {
+      disablePageScroll();
+    } else {
+      enablePageScroll(target);
+    }
+  },
+  getState: function getState() {
+    throwError('"getState" is deprecated! Use "getScrollState" instead. \n https://github.com/FL3NKEY/scroll-lock#getscrollstate');
+    return getScrollState();
+  },
+  getWidth: function getWidth() {
+    throwError('"getWidth" is deprecated! Use "getPageScrollBarWidth" instead. \n https://github.com/FL3NKEY/scroll-lock#getpagescrollbarwidth');
+    return getPageScrollBarWidth();
+  },
+  getCurrentWidth: function getCurrentWidth() {
+    throwError('"getCurrentWidth" is deprecated! Use "getCurrentPageScrollBarWidth" instead. \n https://github.com/FL3NKEY/scroll-lock#getcurrentpagescrollbarwidth');
+    return getCurrentPageScrollBarWidth();
+  },
+  setScrollableTargets: function setScrollableTargets(target) {
+    throwError('"setScrollableTargets" is deprecated! Use "addScrollableTarget" instead. \n https://github.com/FL3NKEY/scroll-lock#addscrollabletargetscrollabletarget');
+    scroll_lock_addScrollableTarget(target);
+  },
+  setFillGapSelectors: function setFillGapSelectors(selector) {
+    throwError('"setFillGapSelectors" is deprecated! Use "addFillGapSelector" instead. \n https://github.com/FL3NKEY/scroll-lock#addfillgapselectorfillgapselector');
+    scroll_lock_addFillGapSelector(selector);
+  },
+  setFillGapTargets: function setFillGapTargets(target) {
+    throwError('"setFillGapTargets" is deprecated! Use "addFillGapTarget" instead. \n https://github.com/FL3NKEY/scroll-lock#addfillgaptargetfillgaptarget');
+    scroll_lock_addFillGapTarget(target);
+  },
+  clearQueue: function clearQueue() {
+    throwError('"clearQueue" is deprecated! Use "clearQueueScrollLocks" instead. \n https://github.com/FL3NKEY/scroll-lock#clearqueuescrolllocks');
+    clearQueueScrollLocks();
+  }
+};
+
+var scrollLock = _objectSpread({
   disablePageScroll: disablePageScroll,
   enablePageScroll: enablePageScroll,
   getScrollState: getScrollState,
@@ -560,7 +634,8 @@ var scrollLock = {
   setFillGapMethod: scroll_lock_setFillGapMethod,
   refillGaps: refillGaps,
   _state: state
-};
+}, deprecatedMethods);
+
 /* harmony default export */ var scroll_lock = __webpack_exports__["default"] = (scrollLock);
 
 /***/ })
