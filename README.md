@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/npm/v/scroll-lock.svg?style=flat">
   <img src="https://img.shields.io/npm/l/scroll-lock.svg?style=flat">
 </p>
-<h4 align="center">Cross-Browser JavaScript library to disable scrolling page</h4>
+<h4 align="center">Cross-browser JavaScript library to disable scrolling page</h4>
 <p align="center"><a href="https://fl3nkey.github.io/scroll-lock/demos/index.html" rel="nofollow"><b>Live demo</b></a>&nbsp;|&nbsp;<a href="https://github.com/FL3NKEY/scroll-lock/blob/master/README.RU.md" rel="nofollow"><b>README на русском</b></a></p>
 
 ## New features 2.0
@@ -88,7 +88,7 @@ To prevent this, scroll-lock calculates the scroll bar width when calling the ``
 ![](https://i.imgur.com/ReJEcN8.gif)
 <br>
 <br>
-But this does not work for items with ```fixed``` positioning. To do this, you must explicitly indicate which element needs to fill in the space.
+But this does not work for elements with ```fixed``` positioning. To do this, you must explicitly indicate which element needs to fill in the space.
 ```javascript
 import { addFillGapTarget, addFillGapSelector } from 'scroll-lock';
 
