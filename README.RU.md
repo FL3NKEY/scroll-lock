@@ -1,165 +1,293 @@
-# scroll-lock
-Javascript библиотека для работы с нативной полосой прокрутки. Так же отключает скроллинг на iOS и других тач устройствах.
+<h1 align="center">
+  scroll-lock
+</h1>
+<p align="center">
+  <img src="https://travis-ci.org/FL3NKEY/scroll-lock.svg?branch=master">
+  <img src="https://img.shields.io/npm/v/scroll-lock.svg?style=flat">
+  <img src="https://img.shields.io/npm/l/scroll-lock.svg?style=flat">
+</p>
+<h4 align="center">Кроссбраузерная JavaScript библиотека для отключения прокрутки страницы</h4>
+<p align="center"><a href="https://fl3nkey.github.io/scroll-lock/demos/index.ru.html" rel="nofollow"><b>Лайв демо</b></a></p>
+
+## Новые возможности 2.0
+* Более придвинутый алгоритм обработки touch событий
+* Поддержка горизонтальной прокрутки
+* Поддержка вложенных прокручиваемых элементов
+* Поддержка вложенных textarea и contenteditable
+* Новый API
 
 ## Установка
-**Через npm** `npm install scroll-lock --save`
-
-``` js
-import scrollLock from 'scroll-lock';
-//или
-var scrollLock = require('scroll-lock');
-```
-
-**Через script тег**
-``` html
-<script src="/путь/до/node_modules/scroll-lock/dist/scroll-lock.min.js"></script>
-```
-``` js
-window.scrollLock;
-```
-
-## Подводный камень #1 (Отключение скроллинга)
-Когда вызывается метод `scrollLock.hide()`, так же скроллинг отключается в iOS и других тач устройствах ([суть проблемы](https://toster.ru/q/461836)). Если рассматривать конкретнее, то **scroll-lock** отлавливает touch эвенты и обрабатывает их, в случае чего вызывает preventDefault(). Поэтому если вызвать `scrollLock.hide()` и указать какому либо элементу `overflow-y` со значением `scroll`, то этот элемент скроллится не будет (речь идёт только о тач устройствах).
-<br>
-Если надо сделать какой-либо элемент "скроллабельным", укажи этому элементу `sl--scrollable` класс (он же должен иметь `overflow-y` свойство, `scroll` или `auto`) или используйте `scrollLock.setScrollableTargets(targets)` метод или укажите его первым аргументов в методе `scrollLock.hide(targets)`.
-```html
-<div class="modal-scroll sl--scrollable"></div>
-```
-```css
-.modal-scroll {
-	overflow: auto;
-	-webkit-overflow-scrolling: touch; /* не забывай про это свойство, скроллинг в iOS будет более плавным */
-}
+### Через npm или yarn
+```shell
+npm install scroll-lock
+# или
+yarn install scroll-lock
 ```
 ```js
-var $scrollableTarget = document.getElementById('scrollable');
+//es6 import
+import { disablePageScroll, enablePageScroll } from 'scroll-lock';
 
-scrollLock.setScrollableTargets($scrollableTarget);
 //или
-scrollLock.hide($scrollableTarget);
+import scrollLock from 'scroll-lock';
+scrollLock.disablePageScroll();
+//...
+
+//require
+const scrollLock = require('scroll-lock');
+scrollLock.disablePageScroll();
+//...
 ```
 
-Лайв пример: https://fl3nkey.github.io/scroll-lock/demos/index.html
-<br>
-Исходники примера: https://codepen.io/FL3NKEY/pen/YaQPrg
-
-## Подводный камень #2 (Ширина полосы прокрутки и прыгскоки)
-О чем речь? Когда `body` имеет `overflow` свойство в значении `hidden`, то ширина контейнера увеличивается на ширину полосы прокрутки, поэтому появляется непреятный "мерцающий" эффект. Объяснение: например ширина контейнера *1200px*, а ширина окна *1217px* (ширина контейнера + ширина полосы прокрутки), то после `scrollLock.hide()` ширина контейнера примет ширину окна.
-<br>
-Но чтобы предотвратить это, **scroll-bock** высчитывает ширину полосы прокрутки перед отключением скроллинга и "заполняет пробел".
-<br>
-Но это не работает для элементов у которых `position` свойство в значении `fixed`. В таких случаях надо указать элементу `sl--fillgap` класс.
+### Черз тег script
 ```html
-<div class="fixed-element sl--fillgap"></div>
+<script src="path/to/scroll-lock.min.js"></script>
+<script>
+  scrollLock.disablePageScroll();
+  //...
+</script>
 ```
-
-После вызова метода `scrollLock.hide()`:
-```html
-<body style="overflow: hidden; padding-right: ${scroll-width};">
-	<div class="fixed-element sl-fillgap" style="padding-right: ${scroll-width};">...</div>
-</body>
-```
-Так же можно изменить "[метод заполнения пробела](#setfillgapmethodmethod)", "[селекторы](#setfillgapselectorsselectors)" и "[элементы](#setfillgaptargetstargets)"!
-
-Лайв пример: https://fl3nkey.github.io/scroll-lock/demos/fill_gap.html
+Дальше в примерах будет использован **es6 import**, но эти методы также будут доступны из объекта ```scrollLock```.
 <br>
-Исходники примера: https://codepen.io/FL3NKEY/pen/JLeJqY
+
+## Отключение прокрутки страницы
+Когда вы вызываете метод ```disablePageScroll```, также прокрутка отключается в iOS и других touch устройствах ([суть проблемы](https://toster.ru/q/461836)). Но прокрута на touch устройствах будет отключена на всех элементов, для этого надо явно указать, какой элемент будет прокручиваться на странице.
+```javascript
+import { disablePageScroll, enablePageScroll } from 'scroll-lock';
+
+//Получим элемент, который должен прокручиваться при отключеной прокрутки страницы
+const $scrollableElement = document.querySelector('.my-scrollable-element');
+
+//Передадим элемент аргументом и отключим прокрутку на странице
+disablePageScroll($scrollableElement);
+
+//Также передадим аргументом элемент и активируем прокрутку на странице
+enablePageScroll($scrollableElement);
+```
+Или же вы можете указать атрибут ```data-scroll-lock-scrollable``` прокручиваемому элементу.
+```html
+<div class="my-scrollable-element" data-scroll-lock-scrollable></div>
+```
+
+#### Лайв демо: [https://fl3nkey.github.io/scroll-lock/demos/index.ru.html#ex-main](https://fl3nkey.github.io/scroll-lock/demos/index.ru.html#ex-main)
+
+#### ```textarea``` и ```contenteditable```
+Если в прокручиваемом элементе будут вложены ```textarea``` или ```contenteditable``` то не переживайте, они будут прокручиваться без явного указания.
+
+#### Лайв демо: [https://fl3nkey.github.io/scroll-lock/demos/index.ru.html#ex-inputs](https://fl3nkey.github.io/scroll-lock/demos/index.ru.html#ex-inputs)
+
+## Заполнение пробела
+Когда вызывается метод ```disablePageScroll```, scroll-lock указывает ```overflow: hidden;``` для ```body```, тем самым скрывая полосу прокрутки. В некоторых ОС полоса прокрутки имеет свою физическую ширину на странице, тем самым мы получае эффект "смещения":
+<br>
+<br>
+![](https://i.imgur.com/SQ3IRNr.gif)
+<br>
+<br>
+Что бы предотвратить это, scroll-lock высчитывает ширину полосы прокрутки при вызове метода  ```disablePageScroll``` и заполняет пробел для элемента ```body```.
+<br>
+<br>
+![](https://i.imgur.com/ReJEcN8.gif)
+<br>
+<br>
+Но это не работает для элементов с позиционированием ```fixed```. Для этого надо явно указать, какому ещё элементу нужно заполнить пробел.
+```javascript
+import { addFillGapTarget, addFillGapSelector } from 'scroll-lock';
+
+//селектор
+addFillGapSelector('.my-fill-gap-selector');
+
+//элемент
+const $fillGapElement = document.querySelector('.my-fill-gap-element');
+addFillGapTarget($fillGapElement);
+```
+Или же вы можете указать атрибут ```data-scroll-lock-fill-gap```.
+```html
+<div class="my-fill-gap-element" data-scroll-lock-fill-gap></div>
+```
+
+#### Лайв демо: [https://fl3nkey.github.io/scroll-lock/demos/index.ru.html#ex-fill-gap](https://fl3nkey.github.io/scroll-lock/demos/index.ru.html#ex-fill-gap)
 
 ## Очередь
-Вызов методов `scrollLock.hide()` и `scrollLock.show()` создает очередь вызовов. Что я хочу донести, если вы вызовите метод `scrollLock.hide()` **два раза подряд**, а потом `scrollLock.show()`, скроллбар не активируется, т.к. метод `scrollLock.show()` нужно будет **вызвать второй раз**.
+Вызов метода ```disablePageScroll``` создает очередь вызовов. Если вы вызовите метод ```disablePageScroll``` два раза подряд, а потом ```enablePageScroll```, прокрутка страницы не активируется, т.к. метод ```enablePageScroll``` **нужно будет вызвать второй раз**.
 <br>
-Если вам по каким то причинам надо активировать скролбар вне очереди, используйте метод `scrollLock.clearQueue()`:
-``` js
-scrollLock.clearQueue().show();
+Если вам по каким то причинам надо активировать прокрутку страницы вне очереди, используйте метод ```clearQueueScrollLocks```:
+```javascript
+import { disablePageScroll, clearQueueScrollLocks } from 'scroll-lock';
+
+clearQueueScrollLocks();
+disablePageScroll();
 ```
 
-## Методы
-### hide(targets)
-Скрытие полосы прокрутки и отключение скроллинга.
-<br>
-**Тип:** Element или Array
-``` js
-scrollLock.hide($scrollableElement);
+## API
+
+#### ```disablePageScroll(scrollableTarget)```
+Скрывает полосу прокрутки и отключает прокрутку страницы.
+* ```scrollableTarget``` - (```HTMLElement | NodeList | HTMLElement array```) прокручиваемый элемент
+```javascript
+import { disablePageScroll } from 'scroll-lock';
+
+const $scrollableElement = document.querySelector('.my-scrollable-element');
+disablePageScroll($scrollableElement);
 ```
 
-### show()
-Раскрытие полосы прокрутки и включение скроллинга.
-``` js
-scrollLock.show();
+#### ```enablePageScroll(scrollableTarget)```
+Показывает полосу прокрутки и активирует прокрутку страницы.
+* ```scrollableTarget``` - (```HTMLElement | NodeList | HTMLElement array```) прокручиваемый элемент
+```javascript
+import { enablePageScroll } from 'scroll-lock';
+
+const $scrollableElement = document.querySelector('.my-scrollable-element');
+enablePageScroll($scrollableElement);
 ```
 
-### toggle()
-Переключение между `hide()` и `show()` методом.
-``` js
-scrollLock.toggle();
+#### ```getScrollState()```
+Возвращает состояние полосы прокрутки страницы.
+```javascript
+import { disablePageScroll, getScrollState } from 'scroll-lock';
+
+console.log(getScrollState()); //true
+disablePageScroll();
+console.log(getScrollState()); //false
 ```
 
-### getState()
-Получение состояние скролла.
-``` js
-scrollLock.getState(); //true
-scrollLock.hide();
-scrollLock.getState(); //false
-```
-
-### getWidth()
-Получение ширины полосы прокрутки.
-``` js
-scrollLock.getWidth();
-```
-
-### getCurrentWidth()
-Получение ширины полосы прокрутки в конкретный момент.
-``` js
-scrollLock.getCurrentWidth();
-```
-
-### setScrollableTargets(targets)
-Указывает элементы, которые должны скроллится.
-<br>
-**Тип:** Element или Array
-``` js
-scrollLock.setScrollableTargets($scrollableElement);
-```
-
-### setFillGapMethod(method)
-Изменяет метод "заполнение пробела".
-<br>
-**Тип:** String
-<br>
-**Доступные значения:**
-- `padding`: `padding-right: ${scroll-width};`
-- `margin`: `margin-right: ${scroll-width};`
-- `width`: `width: calc(100% - ${scroll-width});`
-
-**Значение по умолчанию:** `padding` 
-``` js
-scrollLock.setFillGapMethod('width');
-```
-
-### setFillGapSelectors(selectors)
-Изменение селекторов, которым будет "заполняться пробел".
-<br>
-**Тип:** Array
-<br>
-**Доступные значение:** Массив селекторов.
-<br>
-**Значение по умолчанию** `['body']` 
-``` js
-scrollLock.setFillGapSelectors(['body', '.some-element', '#another-element']);
-```
-
-### setFillGapTargets(targets)
-Указывает элементы, которым будет "заполняться пробел".
-<br>
-**Тип:** Element или Array
-``` js
-scrollLock.setFillGapTargets($someElement);
-```
-
-
-### clearQueue()
+#### ```clearQueueScrollLocks()```
 Очищает значение очереди.
-``` js
-scrollLock.clearQueue();
+```javascript
+import { disablePageScroll, enablePageScroll, clearQueueScrollLocks, getScrollState } from 'scroll-lock';
+
+disablePageScroll();
+disablePageScroll();
+disablePageScroll();
+disablePageScroll();
+
+enablePageScroll();
+console.log(getScrollState()); //false
+
+clearQueueScrollLocks();
+enablePageScroll();
+console.log(getScrollState()); //true
 ```
+
+#### ```getPageScrollBarWidth()```
+Возвращает ширину полосы прокрутки.
+```javascript
+import { getPageScrollBarWidth } from 'scroll-lock';
+
+console.log(getPageScrollBarWidth()); //Number
+```
+
+
+#### ```getCurrentPageScrollBarWidth()```
+Возвращает ширину полосы прокрутки в данный момент.
+```javascript
+import { disablePageScroll, getCurrentPageScrollBarWidth } from 'scroll-lock';
+
+console.log(getCurrentPageScrollBarWidth()); //Number
+disablePageScroll();
+console.log(getCurrentPageScrollBarWidth()); //0
+```
+
+
+#### ```addScrollableSelector(scrollableSelector)```
+Делает элементы с этим селектором прокручиваемыми.
+* ```scrollableSelector``` - (```String | String array```) селектор прокручиваемых элементов
+<br> **Начальное значение:** ```['[data-scroll-lock-scrollable]']```
+```javascript
+import { disablePageScroll, addScrollableSelector } from 'scroll-lock';
+
+addScrollableSelector('.my-scrollable-selector');
+disablePageScroll();
+```
+
+#### ```removeScrollableSelector(scrollableSelector)```
+Делает элементы с этим селектором не прокручиваемыми.
+* ```scrollableSelector``` - (```String | String array```) селектор прокручиваемых элементов
+```javascript
+import { removeScrollableSelector } from 'scroll-lock';
+
+removeScrollableSelector('.my-scrollable-selector');
+```
+
+#### ```addScrollableTarget(scrollableTarget)```
+Делает элемент прокручиваемым.
+* ```scrollableSelector``` - (```HTMLElement | NodeList | HTMLElement array```) прокручиваемый элемент
+```javascript
+import { disablePageScroll, addScrollableTarget } from 'scroll-lock';
+
+const $scrollableElement = document.querySelector('.my-scrollable-element');
+addScrollableTarget($scrollableElement);
+disablePageScroll();
+```
+
+#### ```removeScrollableTarget(scrollableTarget)```
+Делает элемент не прокручиваемым.
+* ```scrollableSelector``` - (```HTMLElement | NodeList | HTMLElement array```) прокручиваемый элемент
+```javascript
+import { removeScrollableTarget } from 'scroll-lock';
+
+const $scrollableElement = document.querySelector('.my-scrollable-element');
+removeScrollableTarget($scrollableElement);
+```
+
+
+
+#### ```addFillGapSelector(fillGapSelector)```
+Заполняет пробелы у элементов с этим селектором.
+* ```fillGapSelector``` - (```String | String array```) селектор заполненения пробела
+<br> **Начальное значение:** ```['body', '[data-scroll-lock-fill-gap]']```
+```javascript
+import { addFillGapSelector } from 'scroll-lock';
+
+addFillGapSelector('.my-fill-gap-selector');
+```
+
+#### ```removeFillGapSelector(fillGapSelector)```
+Возвращает пробелы у элементов с этим селектором.
+* ```fillGapSelector``` - (```String | String array```) селектор заполненения пробела
+```javascript
+import { removeFillGapSelector } from 'scroll-lock';
+
+removeFillGapSelector('.my-fill-gap-selector');
+```
+
+#### ```addFillGapTarget(fillGapTarget)```
+Заполняет пробел у элемента.
+* ```fillGapTarget``` - (```HTMLElement | NodeList | HTMLElement array```) элемент заполнения пробела
+```javascript
+import { addFillGapTarget } from 'scroll-lock';
+
+const $fillGapElement = document.querySelector('.my-fill-gap-element');
+addScrollableTarget($fillGapElement);
+```
+
+#### ```removeFillGapTarget(fillGapTarget)```
+Возвращает пробел у элемента.
+* ```fillGapTarget``` - (```HTMLElement | NodeList | HTMLElement array```) элемент заполнения пробела
+```javascript
+import { removeFillGapTarget } from 'scroll-lock';
+
+const $fillGapElement = document.querySelector('.my-fill-gap-element');
+removeFillGapTarget($fillGapElement);
+```
+
+#### ```setFillGapMethod(fillGapMethod)```
+Изменяет метод заполнения пробела.
+<br>
+* ```fillGapMethod``` - (```String: 'padding', 'margin', 'width', 'max-width', 'none'```) метод заполнения пробела
+<br> **Стандартное значение:** ```padding```
+```javascript
+import { setFillGapMethod } from 'scroll-lock';
+
+setFillGapMethod('margin');
+```
+
+#### ```refillGaps()```
+Пересчитывает значения заполненых пробелов.
+```javascript
+import { refillGaps } from 'scroll-lock';
+
+refillGaps();
+```
+
+## Смотрите также
+* [How to fight the body scroll от Anton Korzunov](https://medium.com/react-camp/how-to-fight-the-body-scroll-2b00267b37ac)
+* [body-scroll-lock от willmcpo](https://github.com/willmcpo/body-scroll-lock)

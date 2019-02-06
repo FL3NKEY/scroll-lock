@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=0.85, maximum-scale=0.85">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>scroll-lock 2.0 demo</title>
+	<title>scroll-lock 2.0 демо</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css">
 	<link rel="stylesheet" href="./../demos/index.css">
 </head>
@@ -15,26 +15,26 @@
 		<div class="uk-container uk-container-small">
 			<h1>scroll-lock 2.0</h1>
 			<p class="uk-text-muted">
-				scroll-lock - cross-browser JavaScript library to disable page scrolling.
+				scroll-lock - кроссбраузерная JavaScript библиотека для отключения прокрутки страницы.
 				<br>
-				A few examples of what scroll-lock 2.0 is capable of.
+				Несколько примеров на что способен scroll-lock 2.0.
 			</p>
 
 			<div class="uk-section" id="ex-main">
-				<h2>Usual example</h2>
-				<p>A usual example of disabling page scrolling with a scrollable element.<br>There is also support for horizontal
-					scrolling.</p>
+				<h2>Стандартный пример</h2>
+				<p>Стандартный пример отключения прокрутки страницы с прокручиваемым элементом.<br>Также имеется поддержка
+					горизонтальной прокрутки.</p>
 				<ul class="uk-margin-medium-top" uk-tab uk-switcher>
 					<li class="uk-active">
-						<a href="#">Example</a>
+						<a href="#">Пример</a>
 					</li>
 					<li>
-						<a href="#">Code</a>
+						<a href="#">Код</a>
 					</li>
 				</ul>
 				<div class="uk-switcher">
 					<div>
-						<p class="uk-text-meta">scrollable element:</p>
+						<p class="uk-text-meta">Прокручиваемый элемент:</p>
 						<div class="uk-panel uk-panel-scrollable" data-scroll-lock-scrollable>
 							<div style="width: 150%;">
 								<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
@@ -73,29 +73,29 @@
 					<pre><code>var $scrollableElement = document.querySelector('.my-scrollable-element');
 disablePageScroll($scrollableElement);</code></pre>
 				</div>
-				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Page scroll is enabled</div>
-				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Page scroll is disabled</div>
+				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Прокрутка страницы активна</div>
+				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Прокрутка страницы отключена</div>
 				<div class="uk-button-group uk-margin-top">
-					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
-					<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Отключить</button>
+					<button class="uk-button uk-button-default" data-demo-enable-scroll>Активировать</button>
 				</div>
 			</div>
 
 			<div class="uk-section" id="ex-inputs">
-				<h2>Textarea and contenteditable example</h2>
-				<p>If <code>textarea</code> or <code>contenteditable</code> is nested in a scrollable element, they will also
-					scroll.</p>
+				<h2>Пример с textarea и contenteditable</h2>
+				<p>Если в прокручиваемый элемент вложены <code>textarea</code> или <code>contenteditable</code>, они также будут
+					прокручиваться.</p>
 				<ul class="uk-margin-medium-top" uk-tab uk-switcher>
 					<li class="uk-active">
-						<a href="#">Example</a>
+						<a href="#">Пример</a>
 					</li>
 					<li>
-						<a href="#">Code</a>
+						<a href="#">Код</a>
 					</li>
 				</ul>
 				<div class="uk-switcher">
 					<div>
-						<p class="uk-text-meta">scrollable element:</p>
+						<p class="uk-text-meta">Прокручиваемый элемент:</p>
 						<div class="uk-panel uk-panel-scrollable" data-scroll-lock-scrollable>
 							<p class="uk-text-meta">textarea</p>
 							<textarea class="uk-textarea" rows="3">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</textarea>
@@ -119,30 +119,30 @@ disablePageScroll($scrollableElement);</code></pre>
 					</div>
 					<pre><code>var $scrollableElement = document.querySelector('.my-scrollable-element');
 disablePageScroll($scrollableElement);
-//Actually nothing more is needed, scroll-lock will do everything for you!</code></pre>
+//На самом деле больше ничего не нужно, scroll-lock сделает всё за вас!</code></pre>
 				</div>
-				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Page scroll is enabled</div>
-				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Page scroll is disabled</div>
+				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Прокрутка страницы активна</div>
+				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Прокрутка страницы отключена</div>
 				<div class="uk-button-group uk-margin-top">
-					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
-					<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Отключить</button>
+					<button class="uk-button uk-button-default" data-demo-enable-scroll>Активировать</button>
 				</div>
 			</div>
 
 			<div class="uk-section" id="ex-deep">
-				<h2>Nested scrollable elements</h2>
-				<p>If scrollable elements are nested inside a scrollable element, they will also scroll.</p>
+				<h2>Вложенные прокручиваемые элементы</h2>
+				<p>Если внутри прокручиваемого элемента вложены прокручиваемые элементы, они также будут прокручиваться.</p>
 				<ul class="uk-margin-medium-top" uk-tab uk-switcher>
 					<li class="uk-active">
-						<a href="#">Example</a>
+						<a href="#">Пример</a>
 					</li>
 					<li>
-						<a href="#">Code</a>
+						<a href="#">Код</a>
 					</li>
 				</ul>
 				<div class="uk-switcher">
 					<div>
-						<p class="uk-text-meta">scrollable element:</p>
+						<p class="uk-text-meta">Прокручиваемый элемент:</p>
 						<div class="uk-panel uk-panel-scrollable" data-scroll-lock-scrollable>
 							<div>
 								<h4>1</h4>
@@ -150,7 +150,7 @@ disablePageScroll($scrollableElement);
 									consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam
 									modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque?
 									Voluptatibus.</p>
-								<p class="uk-text-meta">scrollable element:</p>
+								<p class="uk-text-meta">Прокручиваемый элемент:</p>
 								<div class="uk-panel uk-panel-scrollable uk-background-muted" data-scroll-lock-scrollable>
 									<div>
 										<h4>2</h4>
@@ -161,7 +161,7 @@ disablePageScroll($scrollableElement);
 											modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa
 											neque?
 											Voluptatibus.</p>
-										<p class="uk-text-meta">scrollable element:</p>
+										<p class="uk-text-meta">Прокручиваемый элемент:</p>
 										<div class="uk-panel uk-panel-scrollable uk-background-secondary uk-light" data-scroll-lock-scrollable>
 											<div>
 												<h4>3</h4>
@@ -186,33 +186,32 @@ disablePageScroll([
 	$scrollableElement3
 ]);</code></pre>
 				</div>
-				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Page scroll is enabled</div>
-				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Page scroll is disabled</div>
+				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Прокрутка страницы активна</div>
+				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Прокрутка страницы отключена</div>
 				<div class="uk-button-group uk-margin-top">
-					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
-					<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Отключить</button>
+					<button class="uk-button uk-button-default" data-demo-enable-scroll>Активировать</button>
 				</div>
 			</div>
 
 			<div class="uk-section" id="ex-fill-gap">
-				<h2>Gap fill example</h2>
-				<p>Filling the gap of the elements, which leaves behind a scroll bar.<br><a href="https://github.com/FL3NKEY/scroll-lock#filling-the-gap">More
-						info</a></p>
+				<h2>Пример с заполнением пробела</h2>
+				<p>Заполнение пробела у элементов, которая оставляет после себя полоса прокрутки.<br><a href="https://github.com/FL3NKEY/scroll-lock/blob/master/README.RU.md#заполнение-пробела">Подробнее</a></p>
 				<ul class="uk-margin-medium-top" uk-tab uk-switcher>
 					<li class="uk-active">
-						<a href="#">Example</a>
+						<a href="#">Пример</a>
 					</li>
 					<li>
-						<a href="#">Code</a>
+						<a href="#">Код</a>
 					</li>
 				</ul>
 				<div class="uk-switcher">
 					<div>
 						<div class="demo-head">
-							<div class="demo-head__item uk-background-muted" data-scroll-lock-fill-gap>Demo element with filling the gap</div>
-							<div class="demo-head__item uk-background-muted uk-text-muted">Demo element without filling the gap</div>
+							<div class="demo-head__item uk-background-muted" data-scroll-lock-fill-gap>Демо элемент с заполнением пробела</div>
+							<div class="demo-head__item uk-background-muted uk-text-muted">Демо элемент без заполнения пробела</div>
 						</div>
-						<div class="uk-margin-top">Gap-filling method:</div>
+						<div class="uk-margin-top">Метод заполнения пробела:</div>
 						<select class="uk-select" data-demo-fill-gap-method-select>
 							<option value="none">none</option>
 							<option value="padding" selected>padding</option>
@@ -221,17 +220,17 @@ disablePageScroll([
 							<option value="max-width">max-width</option>
 						</select>
 					</div>
-					<pre><code>var method = 'padding'; //Available methods: none, padding, margin, width, max-width
+					<pre><code>var method = 'padding'; //Доступные методы: none, padding, margin, width, max-width
 setFillGapMethod(method);
 
 var $fillGapElement = document.querySelector('.my-fill-gap-target');
 addFillGapTarget($fillGapTarget);</code></pre>
 				</div>
-				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Page scroll is enabled</div>
-				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Page scroll is disabled</div>
+				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Прокрутка страницы активна</div>
+				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Прокрутка страницы отключена</div>
 				<div class="uk-button-group uk-margin-top">
-					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
-					<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Отключить</button>
+					<button class="uk-button uk-button-default" data-demo-enable-scroll>Активировать</button>
 				</div>
 			</div>
 		</div>
