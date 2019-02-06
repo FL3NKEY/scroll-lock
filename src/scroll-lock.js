@@ -172,7 +172,7 @@ export const removeFillGapSelector = (selector) => {
 	if (selector) {
 		const selectors = argumentAsArray(selector);
 		selectors.map((selector) => {
-			state.fillGapSelectors = fillGapSelectors.scrollableSelectors.filter((fSelector) => fSelector !== selector);
+			state.fillGapSelectors = state.fillGapSelectors.filter((fSelector) => fSelector !== selector);
 			if (!state.scroll) {
 				unfillGapSelector(selector);
 			}

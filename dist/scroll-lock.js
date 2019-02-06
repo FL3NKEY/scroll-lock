@@ -368,7 +368,7 @@ var scroll_lock_removeFillGapSelector = function removeFillGapSelector(selector)
   if (selector) {
     var selectors = argumentAsArray(selector);
     selectors.map(function (selector) {
-      state.fillGapSelectors = fillGapSelectors.scrollableSelectors.filter(function (fSelector) {
+      state.fillGapSelectors = state.fillGapSelectors.filter(function (fSelector) {
         return fSelector !== selector;
       });
 
