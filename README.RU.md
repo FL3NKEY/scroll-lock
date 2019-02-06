@@ -1,4 +1,4 @@
-# scroll-lock [![Build Status](https://travis-ci.org/FL3NKEY/scroll-lock-2.0-private.svg?branch=master)](https://travis-ci.org/FL3NKEY/scroll-lock-2.0-private) ![](https://img.shields.io/npm/v/scroll-lock.svg?style=flat) ![](https://img.shields.io/npm/l/scroll-lock.svg?style=flat)
+# scroll-lock [![Build Status](https://travis-ci.org/FL3NKEY/scroll-lock.svg?branch=master)](https://travis-ci.org/FL3NKEY/scroll-lock) ![](https://img.shields.io/npm/v/scroll-lock.svg?style=flat) ![](https://img.shields.io/npm/l/scroll-lock.svg?style=flat)
 Кроссбраузерная JavaScript библиотека для отключения прокрутки страницы.
 #### Лайв демо: [https://fl3nkey.github.io/scroll-lock/demos/index.ru.html](https://fl3nkey.github.io/scroll-lock/demos/index.ru.html)
 <br>
