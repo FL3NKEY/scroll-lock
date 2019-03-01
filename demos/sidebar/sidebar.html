@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.62, minimum-scale=0.62">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>scroll-lock sidebar example</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/css/uikit.min.css">
+	<link rel="stylesheet" href="./../../demos/sidebar/sidebar.css">
+</head>
+
+<body class="uk-background-muted">
+	<div class="modal-backdoor js-modal-backdoor"></div>
+	<div class="modal js-modal js-modal-scroll">
+		<div class="modal-container">
+			<div class="uk-card uk-card-default">
+				<div class="uk-card-header">
+					<div class="uk-grid-small uk-flex-middle" uk-grid>
+						<div class="uk-width-expand">
+							<h3>Lorem heading</h3>
+						</div>
+						<div class="uk-width-auto">
+							<button class="uk-button uk-button-link js-close-modal">Close</button>
+						</div>
+					</div>
+				</div>
+				<div class="uk-card-body">
+					<p class="uk-text-lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+						ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat. <a href="#">Duis aute irure dolor in reprehenderit</a> in voluptate velit esse cillum dolore eu fugiat
+						nulla pariatur.
+						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vel provident debitis quisquam itaque cum, quam, totam
+						quibusdam dolore tempora assumenda necessitatibus unde optio numquam aut labore repudiandae eius consequuntur!
+						Reiciendis.
+						Optio impedit explicabo similique adipisci ex sequi, ut porro nostrum pariatur vero! Laudantium adipisci officia
+						nam modi deserunt quidem, cum amet, aspernatur necessitatibus accusamus nemo temporibus eos ullam, maxime vero!
+						Laboriosam rem aliquid voluptatem assumenda dolorem placeat animi vitae natus impedit at maxime quas rerum
+						explicabo praesentium fuga quod ipsa, beatae magni veniam nihil! Fuga consequuntur ratione ducimus iste laborum!</p>
+					<p class="uk-text-lead">Lorem form</p>
+					<div class="uk-margin-bottom">
+						<label>Name</label>
+						<input type="text" class="uk-input" placeholder="Your name">
+					</div>
+					<div class="uk-margin-bottom">
+						<label>Message</label>
+						<textarea class="uk-textarea" placeholder="Your message..." rows="4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae velit at quibusdam cum unde odit nisi. Voluptas, quaerat enim, alias amet deleniti eveniet dolorum minus voluptates cum, magnam nostrum possimus!
+						Officia natus laborum possimus ducimus dolore placeat odio magni atque, rem facilis officiis tenetur pariatur quidem vitae repellendus aut sequi minus consequatur sapiente! Mollitia minus commodi dignissimos ipsum eos obcaecati?
+						Libero mollitia magnam placeat distinctio rem recusandae fuga odio, laborum accusantium ullam officia officiis consectetur delectus, labore neque deserunt qui perspiciatis nulla velit ipsam! Saepe ratione a maxime blanditiis quas!
+						Esse doloribus sed omnis libero nam et nisi fugit maiores, a quis qui nobis tempora aperiam cum error fugiat mollitia provident itaque? Maxime sapiente exercitationem natus est voluptate laborum ea!</textarea>
+					</div>
+					<div class="uk-margin-bottom">
+						<label>Choose some</label>
+						<select class="uk-select">
+							<option selected disabled>Your choose...</option>
+							<option>Number 1</option>
+							<option>Number 2</option>
+							<option>Number 3</option>
+							<option>Number 4</option>
+						</select>
+					</div>
+
+				</div>
+				<div class="uk-card-footer">
+					<button class="uk-button uk-button-primary js-close-modal">Close modal</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
+		<nav class="uk-navbar-container uk-navbar uk-navbar-transparent uk-light uk-background-primary js-navbar-fill-gap"
+		 uk-navbar style="position: relative; z-index: 980;">
+			<div class="uk-navbar-left">
+				<ul class="uk-navbar-nav">
+					<li class="uk-active"><a href="#">News</a></li>
+					<li><a href="#">About</a></li>
+				</ul>
+			</div>
+			<div class="uk-navbar-right">
+				<ul class="uk-navbar-nav">
+					<li><a href="#">Sign in</a></li>
+					<li><a href="#">Sign up</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<div class="sidebar uk-card uk-card-default js-sidebar-scroll">
+		<ul class="uk-nav uk-nav-primary">
+			<li class="uk-nav-header">Sidebar</li>
+			<li class="uk-active"><a href="#">Item</a></li>
+			<li class="uk-parent">
+				<a href="#">Item</a>
+				<ul class="uk-nav-sub">
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+				</ul>
+			</li>
+			<div class="uk-nav-divider"></div>
+			<li class="uk-parent">
+				<a href="#">Item</a>
+				<ul class="uk-nav-sub">
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+				</ul>
+			</li>
+			<div class="uk-nav-divider"></div>
+			<li class="uk-parent">
+				<a href="#">Item</a>
+				<ul class="uk-nav-sub">
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+				</ul>
+			</li>
+			<div class="uk-nav-divider"></div>
+			<li class="uk-parent">
+				<a href="#">Item</a>
+				<ul class="uk-nav-sub">
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+				</ul>
+			</li>
+			<div class="uk-nav-divider"></div>
+			<li class="uk-parent">
+				<a href="#">Item</a>
+				<ul class="uk-nav-sub">
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+					<li><a href="#">Sub item</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="content">
+		<div class="uk-section">
+			<div class="uk-container uk-container-small">
+				<article class="uk-article uk-card uk-card-default uk-card-body">
+					<h1 class="uk-article-title"><a class="uk-link-reset" href="#p-1">Lorem heading</a></h1>
+					<p class="uk-text-lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+						ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat. <a href="#">Duis aute irure dolor in reprehenderit</a> in voluptate velit esse cillum dolore eu fugiat
+						nulla pariatur.
+						Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum...</p>
+					<p>
+						<button class="uk-button uk-button-primary js-open-modal">Open modal</button>
+					</p>
+				</article>
+				<article class="uk-article uk-card uk-card-default uk-card-body">
+					<h1 class="uk-article-title"><a class="uk-link-reset" href="#p-2">Lorem another heading</a></h1>
+					<p class="uk-text-lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						ut
+						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip. magna aliqua...</p>
+					<p>
+						<button class="uk-button uk-button-primary js-open-modal">Open modal</button>
+					</p>
+				</article>
+				<article class="uk-article uk-card uk-card-default uk-card-body">
+					<h1 class="uk-article-title"><a class="uk-link-reset" href="#p-3">Lorem heading???</a></h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						ut
+						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip. magna aliqua...</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+						ut
+						labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+						aliquip. magna aliqua...</p>
+					<p>
+						<button class="uk-button uk-button-primary js-open-modal">Open modal</button>
+					</p>
+				</article>
+
+				<h1>Code</h1>
+				<pre><code>var eachNode = function(nodeList, callback) {
+	if (nodeList && callback) {
+		for (let i = 0; i < nodeList.length; i++) {
+			if (callback(nodeList[i], i, nodeList.length) === true) {
+				break;
+			}
+		}
+	}
+};
+
+var $modal = document.querySelector('.js-modal');
+var $modalScroll = document.querySelector('.js-modal-scroll');
+var $modalBackdoor = document.querySelector('.js-modal-backdoor');
+var $openModalButtons = document.querySelectorAll('.js-open-modal');
+var $closeModalButtons = document.querySelectorAll('.js-close-modal');
+
+var $sidebarScroll = document.querySelector('.js-sidebar-scroll');
+scrollLock.addLockableTarget($sidebarScroll);
+
+var $navbarFillGap = document.querySelectorAll('.js-navbar-fill-gap');
+scrollLock.addFillGapTarget($navbarFillGap);
+
+function openModal() {
+	$modalBackdoor.style.display = 'block';
+	$modal.style.display = 'block';
+	scrollLock.disablePageScroll($modalScroll);
+}
+
+function closeModal() {
+	$modalBackdoor.style.display = '';
+	$modal.style.display = '';
+	scrollLock.enablePageScroll($modalScroll);
+}
+
+eachNode($openModalButtons, function($el) {
+	$el.addEventListener('click', openModal);
+});
+
+eachNode($closeModalButtons, function($el) {
+	$el.addEventListener('click', closeModal);
+});</code></pre>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
+	<script src="./../../dist/scroll-lock.js"></script>
+	<script src="./../../demos/sidebar/sidebar.js"></script>
+</body>
+
+</html>
