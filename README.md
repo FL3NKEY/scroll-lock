@@ -113,8 +113,17 @@ If for some reason you need to activate scrolling the page out of turn, use the 
 ```javascript
 import { disablePageScroll, clearQueueScrollLocks } from 'scroll-lock';
 
-clearQueueScrollLocks();
 disablePageScroll();
+disablePageScroll();
+disablePageScroll();
+disablePageScroll();
+
+enablePageScroll();
+console.log(getScrollState()); //false
+
+clearQueueScrollLocks();
+enablePageScroll();
+console.log(getScrollState()); //true
 ```
 
 ## API
@@ -167,12 +176,20 @@ enablePageScroll();
 console.log(getScrollState()); //true
 ```
 
-#### ```getPageScrollBarWidth()```
+#### ```getPageScrollBarWidth(onlyExists)```
 Returns the width of the scroll bar.
+* ```onlyExists``` - (```Boolean```) only if scroll bar is exists
+<br> **Default value:** ```false```
 ```javascript
 import { getPageScrollBarWidth } from 'scroll-lock';
 
+document.body.style.overflow = 'scroll';
 console.log(getPageScrollBarWidth()); //Number
+disablePageScroll();
+console.log(getPageScrollBarWidth(true)); //Number
+document.body.style.overflow = 'hidden';
+console.log(getPageScrollBarWidth()); //Number
+console.log(getPageScrollBarWidth(true)); //0
 ```
 
 
@@ -226,6 +243,30 @@ import { removeScrollableTarget } from 'scroll-lock';
 
 const $scrollableElement = document.querySelector('.my-scrollable-element');
 removeScrollableTarget($scrollableElement);
+```
+
+
+
+#### ```addLockableSelector(lockableSelector)```
+Makes elements with this selector lockable.
+* ```lockableSelector``` - (```String | String array```) lockable selector
+<br> **Initial value:** ```['[data-scroll-lock-lockable]']```
+```javascript
+import { disablePageScroll, addLockableSelector } from 'scroll-lock';
+
+addLockableSelector('.my-lockable-selector');
+disablePageScroll();
+```
+
+#### ```addLockableTarget(lockableTarget)```
+Makes the element lockable.
+* ```lockableTarget``` - (```HTMLElement | NodeList | HTMLElement array```) lockable element
+```javascript
+import { disablePageScroll, addLockableTarget } from 'scroll-lock';
+
+const $lockableElement = document.querySelector('.my-lockable-element');
+addLockableTarget($lockableElement);
+disablePageScroll();
 ```
 
 

@@ -234,6 +234,53 @@ addFillGapTarget($fillGapTarget);</code></pre>
 					<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
 				</div>
 			</div>
+
+			<div class="uk-section" id="ex-lockable">
+				<h2>Make Lockable elements</h2>
+				<p>Disable scrolling could be not only for <code>body</code>!</p>
+				<ul class="uk-margin-medium-top" uk-tab uk-switcher>
+					<li class="uk-active">
+						<a href="#">Example</a>
+					</li>
+					<li>
+						<a href="#">Code</a>
+					</li>
+				</ul>
+				<div class="uk-switcher">
+					<div>
+						<p class="uk-text-meta">lockable element:</p>
+						<div class="uk-panel uk-padding uk-panel-scrollable" data-scroll-lock-lockable>
+							<div style="height: 200%;">
+								<p class="uk-text-meta">scrollable element:</p>
+								<div class="uk-panel uk-padding uk-panel-scrollable uk-background-muted" data-scroll-lock-scrollable>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex
+										consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam
+										modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque?
+										Voluptatibus.</p>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex
+										consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam
+										modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque?
+										Voluptatibus.</p>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex
+										consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam
+										modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque?
+										Voluptatibus.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<pre><code>var $lockableElement = document.querySelector('.my-lockable-element');
+var $scrollableElement = document.querySelector('.my-scrollable-element');
+addLockableTarget($scrollableElement);
+disablePageScroll($scrollableElement);</code></pre>
+				</div>
+				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Page scroll is enabled</div>
+				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Page scroll is disabled</div>
+				<div class="uk-button-group uk-margin-top">
+					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Disable</button>
+					<button class="uk-button uk-button-default" data-demo-enable-scroll>Enable</button>
+				</div>
+			</div>
 		</div>
 	</div>
 
