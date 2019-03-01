@@ -20,6 +20,12 @@
 				Несколько примеров на что способен scroll-lock 2.0.
 			</p>
 
+			<p class="uk-text-lead">Больше демок</p>
+			<ul>
+				<li><a href="https://fl3nkey.github.io/scroll-lock/demos/modal/modal.html">Modal</a></li>
+				<li><a href="https://fl3nkey.github.io/scroll-lock/demos/sidebar/sidebar.html">Sidebar</a></li>
+			</ul>
+
 			<div class="uk-section" id="ex-main">
 				<h2>Стандартный пример</h2>
 				<p>Стандартный пример отключения прокрутки страницы с прокручиваемым элементом.<br>Также имеется поддержка
@@ -225,6 +231,53 @@ setFillGapMethod(method);
 
 var $fillGapElement = document.querySelector('.my-fill-gap-target');
 addFillGapTarget($fillGapTarget);</code></pre>
+				</div>
+				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Прокрутка страницы активна</div>
+				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Прокрутка страницы отключена</div>
+				<div class="uk-button-group uk-margin-top">
+					<button class="uk-button uk-button-primary" data-demo-disable-scroll>Отключить</button>
+					<button class="uk-button uk-button-default" data-demo-enable-scroll>Активировать</button>
+				</div>
+			</div>
+
+			<div class="uk-section" id="ex-lockable">
+				<h2>Не прокручиваемые элементы</h2>
+				<p>Отключить прокрутку можно не только у <code>body</code>!</p>
+				<ul class="uk-margin-medium-top" uk-tab uk-switcher>
+					<li class="uk-active">
+						<a href="#">Пример</a>
+					</li>
+					<li>
+						<a href="#">Код</a>
+					</li>
+				</ul>
+				<div class="uk-switcher">
+					<div>
+						<p class="uk-text-meta">не прокручиваемый элемент:</p>
+						<div class="uk-panel uk-padding uk-panel-scrollable" data-scroll-lock-lockable>
+							<div style="height: 200%;">
+								<p class="uk-text-meta">прокручиваемый элемент:</p>
+								<div class="uk-panel uk-padding uk-panel-scrollable uk-background-muted" data-scroll-lock-scrollable>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex
+										consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam
+										modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque?
+										Voluptatibus.</p>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex
+										consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam
+										modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque?
+										Voluptatibus.</p>
+									<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut sint voluptatum sunt nisi quibusdam ex
+										consectetur perspiciatis. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi natus eos ullam
+										modi reiciendis sed ex eius perspiciatis, nostrum maxime, quo sapiente voluptas ad fuga ea quis ipsa neque?
+										Voluptatibus.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<pre><code>var $lockableElement = document.querySelector('.my-lockable-element');
+var $scrollableElement = document.querySelector('.my-scrollable-element');
+addLockableTarget($scrollableElement);
+disablePageScroll($scrollableElement);</code></pre>
 				</div>
 				<div class="uk-text-primary uk-margin-top" data-demo-state-enable>Прокрутка страницы активна</div>
 				<div class="uk-text-danger uk-margin-top" data-demo-state-disable>Прокрутка страницы отключена</div>

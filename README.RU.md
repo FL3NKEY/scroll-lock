@@ -113,8 +113,17 @@ addFillGapTarget($fillGapElement);
 ```javascript
 import { disablePageScroll, clearQueueScrollLocks } from 'scroll-lock';
 
-clearQueueScrollLocks();
 disablePageScroll();
+disablePageScroll();
+disablePageScroll();
+disablePageScroll();
+
+enablePageScroll();
+console.log(getScrollState()); //false
+
+clearQueueScrollLocks();
+enablePageScroll();
+console.log(getScrollState()); //true
 ```
 
 ## API
@@ -167,12 +176,20 @@ enablePageScroll();
 console.log(getScrollState()); //true
 ```
 
-#### ```getPageScrollBarWidth()```
+#### ```getPageScrollBarWidth(onlyExists)```
 Возвращает ширину полосы прокрутки.
+* ```onlyExists``` - (```Boolean```) если полоса прокрутки найдена
+<br> **Стандартное значение:** ```false```
 ```javascript
 import { getPageScrollBarWidth } from 'scroll-lock';
 
+document.body.style.overflow = 'scroll';
 console.log(getPageScrollBarWidth()); //Number
+disablePageScroll();
+console.log(getPageScrollBarWidth(true)); //Number
+document.body.style.overflow = 'hidden';
+console.log(getPageScrollBarWidth()); //Number
+console.log(getPageScrollBarWidth(true)); //0
 ```
 
 
@@ -226,6 +243,30 @@ import { removeScrollableTarget } from 'scroll-lock';
 
 const $scrollableElement = document.querySelector('.my-scrollable-element');
 removeScrollableTarget($scrollableElement);
+```
+
+
+
+#### ```addLockableSelector(lockableSelector)```
+Делает элементы с этим селектором не прокручиваемыми в любом случае.
+* ```lockableSelector``` - (```String | String array```) селектор не прокручиваемых элементов
+<br> **Initial value:** ```['[data-scroll-lock-lockable]']```
+```javascript
+import { disablePageScroll, addLockableSelector } from 'scroll-lock';
+
+addLockableSelector('.my-lockable-selector');
+disablePageScroll();
+```
+
+#### ```addLockableTarget(lockableTarget)```
+Делает элемент не прокручиваемым в любом случае.
+* ```lockableTarget``` - (```HTMLElement | NodeList | HTMLElement array```) не прокручиваемый элемент
+```javascript
+import { disablePageScroll, addLockableTarget } from 'scroll-lock';
+
+const $lockableElement = document.querySelector('.my-lockable-element');
+addLockableTarget($lockableElement);
+disablePageScroll();
 ```
 
 

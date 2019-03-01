@@ -217,12 +217,16 @@ var elementIsScrollableField = function elementIsScrollableField($el) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePageScroll", function() { return enablePageScroll; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getScrollState", function() { return getScrollState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clearQueueScrollLocks", function() { return clearQueueScrollLocks; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTargetScrollBarWidth", function() { return scroll_lock_getTargetScrollBarWidth; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCurrentTargetScrollBarWidth", function() { return scroll_lock_getCurrentTargetScrollBarWidth; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPageScrollBarWidth", function() { return getPageScrollBarWidth; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCurrentPageScrollBarWidth", function() { return getCurrentPageScrollBarWidth; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addScrollableTarget", function() { return scroll_lock_addScrollableTarget; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeScrollableTarget", function() { return scroll_lock_removeScrollableTarget; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addScrollableSelector", function() { return scroll_lock_addScrollableSelector; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeScrollableSelector", function() { return scroll_lock_removeScrollableSelector; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addLockableTarget", function() { return scroll_lock_addLockableTarget; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addLockableSelector", function() { return scroll_lock_addLockableSelector; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setFillGapMethod", function() { return scroll_lock_setFillGapMethod; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFillGapTarget", function() { return scroll_lock_addFillGapTarget; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeFillGapTarget", function() { return scroll_lock_removeFillGapTarget; });
@@ -240,7 +244,8 @@ var state = {
   scroll: true,
   queue: 0,
   scrollableSelectors: ['[data-scroll-lock-scrollable]'],
-  fillGapSelectors: ['body', '[data-scroll-lock-fill-gap]'],
+  lockableSelectors: ['body', '[data-scroll-lock-lockable]'],
+  fillGapSelectors: ['body', '[data-scroll-lock-fill-gap]', '[data-scroll-lock-lockable]'],
   fillGapMethod: FILL_GAP_AVAILABLE_METHODS[0],
   //
   startTouchY: 0,
@@ -248,21 +253,21 @@ var state = {
 };
 var disablePageScroll = function disablePageScroll(target) {
   if (state.queue <= 0) {
-    scroll_lock_fillGaps();
-    document.body.style.overflow = 'hidden';
     state.scroll = false;
+    scroll_lock_hideLockableOverflow();
+    fillGaps();
   }
 
   scroll_lock_addScrollableTarget(target);
   state.queue++;
 };
 var enablePageScroll = function enablePageScroll(target) {
-  state.queue--;
+  state.queue > 0 && state.queue--;
 
   if (state.queue <= 0) {
-    document.body.style.overflow = '';
-    scroll_lock_unfillGaps();
     state.scroll = true;
+    scroll_lock_showLockableOverflow();
+    unfillGaps();
   }
 
   scroll_lock_removeScrollableTarget(target);
@@ -273,18 +278,56 @@ var getScrollState = function getScrollState() {
 var clearQueueScrollLocks = function clearQueueScrollLocks() {
   state.queue = 0;
 };
+var scroll_lock_getTargetScrollBarWidth = function getTargetScrollBarWidth($target) {
+  var onlyExists = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (isElement($target)) {
+    var currentOverflowYProperty = $target.style.overflowY;
+
+    if (onlyExists) {
+      if (!getScrollState()) {
+        $target.style.overflowY = $target.dataset.scrollLockSavedOverflowYProperty;
+      }
+    } else {
+      $target.style.overflowY = 'scroll';
+    }
+
+    var width = scroll_lock_getCurrentTargetScrollBarWidth($target);
+    $target.style.overflowY = currentOverflowYProperty;
+    return width;
+  } else {
+    return 0;
+  }
+};
+var scroll_lock_getCurrentTargetScrollBarWidth = function getCurrentTargetScrollBarWidth($target) {
+  if (isElement($target)) {
+    if ($target === document.body) {
+      var documentWidth = document.documentElement.clientWidth;
+      var windowWidth = window.innerWidth;
+      var currentWidth = windowWidth - documentWidth;
+      return currentWidth;
+    } else {
+      var borderLeftWidthCurrentProperty = $target.style.borderLeftWidth;
+      var borderRightWidthCurrentProperty = $target.style.borderRightWidth;
+      $target.style.borderLeftWidth = '0px';
+      $target.style.borderRightWidth = '0px';
+
+      var _currentWidth = $target.offsetWidth - $target.clientWidth;
+
+      $target.style.borderLeftWidth = borderLeftWidthCurrentProperty;
+      $target.style.borderRightWidth = borderRightWidthCurrentProperty;
+      return _currentWidth;
+    }
+  } else {
+    return 0;
+  }
+};
 var getPageScrollBarWidth = function getPageScrollBarWidth() {
-  var overflowCurrentProperty = document.body.style.overflow;
-  document.body.style.overflow = 'scroll';
-  var width = getCurrentPageScrollBarWidth();
-  document.body.style.overflow = overflowCurrentProperty;
-  return width;
+  var onlyExists = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  return scroll_lock_getTargetScrollBarWidth(document.body, onlyExists);
 };
 var getCurrentPageScrollBarWidth = function getCurrentPageScrollBarWidth() {
-  var documentWidth = document.documentElement.clientWidth;
-  var windowWidth = window.innerWidth;
-  var currentWidth = windowWidth - documentWidth;
-  return currentWidth;
+  return scroll_lock_getCurrentTargetScrollBarWidth(document.body);
 };
 var scroll_lock_addScrollableTarget = function addScrollableTarget(target) {
   if (target) {
@@ -330,6 +373,38 @@ var scroll_lock_removeScrollableSelector = function removeScrollableSelector(sel
         return sSelector !== selector;
       });
     });
+  }
+};
+var scroll_lock_addLockableTarget = function addLockableTarget(target) {
+  if (target) {
+    var targets = argumentAsArray(target);
+    targets.map(function ($targets) {
+      eachNode($targets, function ($target) {
+        if (isElement($target)) {
+          $target.dataset.scrollLockLockable = '';
+        } else {
+          throwError("\"".concat($target, "\" is not a Element."));
+        }
+      });
+    });
+
+    if (!getScrollState()) {
+      scroll_lock_hideLockableOverflow();
+    }
+  }
+};
+var scroll_lock_addLockableSelector = function addLockableSelector(selector) {
+  if (selector) {
+    var selectors = argumentAsArray(selector);
+    selectors.map(function (selector) {
+      state.lockableSelectors.push(selector);
+    });
+
+    if (!getScrollState()) {
+      scroll_lock_hideLockableOverflow();
+    }
+
+    scroll_lock_addFillGapSelector(selector);
   }
 };
 var scroll_lock_setFillGapMethod = function setFillGapMethod(method) {
@@ -407,31 +482,89 @@ var scroll_lock_removeFillGapSelector = function removeFillGapSelector(selector)
 };
 var refillGaps = function refillGaps() {
   if (!state.scroll) {
-    scroll_lock_fillGaps();
+    fillGaps();
   }
 };
 
-var scroll_lock_fillGaps = function fillGaps() {
-  var selector = arrayAsSelector(state.fillGapSelectors);
-  scroll_lock_fillGapSelector(selector);
+var scroll_lock_hideLockableOverflow = function hideLockableOverflow() {
+  var selector = arrayAsSelector(state.lockableSelectors);
+  scroll_lock_hideLockableOverflowSelector(selector);
 };
 
-var scroll_lock_unfillGaps = function unfillGaps() {
-  var selector = arrayAsSelector(state.fillGapSelectors);
-  scroll_lock_unfillGapSelector(selector);
+var scroll_lock_showLockableOverflow = function showLockableOverflow() {
+  var selector = arrayAsSelector(state.lockableSelectors);
+  scroll_lock_showLockableOverflowSelector(selector);
+};
+
+var scroll_lock_hideLockableOverflowSelector = function hideLockableOverflowSelector(selector) {
+  var $targets = document.querySelectorAll(selector);
+  eachNode($targets, function ($target) {
+    scroll_lock_hideLockableOverflowTarget($target);
+  });
+};
+
+var scroll_lock_showLockableOverflowSelector = function showLockableOverflowSelector(selector) {
+  var $targets = document.querySelectorAll(selector);
+  eachNode($targets, function ($target) {
+    scroll_lock_showLockableOverflowTarget($target);
+  });
+};
+
+var scroll_lock_hideLockableOverflowTarget = function hideLockableOverflowTarget($target) {
+  if (isElement($target) && $target.dataset.scrollLockLocked !== 'true') {
+    var computedStyle = window.getComputedStyle($target);
+    $target.dataset.scrollLockSavedOverflowYProperty = computedStyle.overflowY;
+    $target.dataset.scrollLockSavedInlineOverflowProperty = $target.style.overflow;
+    $target.dataset.scrollLockSavedInlineOverflowYProperty = $target.style.overflowY;
+    $target.style.overflow = 'hidden';
+    $target.dataset.scrollLockLocked = 'true';
+  }
+};
+
+var scroll_lock_showLockableOverflowTarget = function showLockableOverflowTarget($target) {
+  if (isElement($target) && $target.dataset.scrollLockLocked === 'true') {
+    $target.style.overflow = $target.dataset.scrollLockSavedInlineOverflowProperty;
+    $target.style.overflowY = $target.dataset.scrollLockSavedInlineOverflowYProperty;
+    delete $target.dataset.scrollLockSavedOverflowYProperty;
+    delete $target.dataset.scrollLockSavedInlineOverflowProperty;
+    delete $target.dataset.scrollLockSavedInlineOverflowYProperty;
+    delete $target.dataset.scrollLockLocked;
+  }
+};
+
+var fillGaps = function fillGaps() {
+  state.fillGapSelectors.map(function (selector) {
+    scroll_lock_fillGapSelector(selector);
+  });
+};
+
+var unfillGaps = function unfillGaps() {
+  state.fillGapSelectors.map(function (selector) {
+    scroll_lock_unfillGapSelector(selector);
+  });
 };
 
 var scroll_lock_fillGapSelector = function fillGapSelector(selector) {
   var $targets = document.querySelectorAll(selector);
+  var isLockable = state.lockableSelectors.indexOf(selector) !== -1;
   eachNode($targets, function ($target) {
-    scroll_lock_fillGapTarget($target);
+    scroll_lock_fillGapTarget($target, isLockable);
   });
 };
 
 var scroll_lock_fillGapTarget = function fillGapTarget($target) {
-  var scrollBarWidth = getPageScrollBarWidth();
+  var isLockable = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
   if (isElement($target)) {
+    var scrollBarWidth;
+
+    if ($target.dataset.scrollLockLockable === '' || isLockable) {
+      scrollBarWidth = scroll_lock_getTargetScrollBarWidth($target, true);
+    } else {
+      var $lockableParent = findParentBySelector($target, arrayAsSelector(state.lockableSelectors));
+      scrollBarWidth = scroll_lock_getTargetScrollBarWidth($lockableParent, true);
+    }
+
     if ($target.dataset.scrollLockFilledGap === 'true') {
       scroll_lock_unfillGapTarget($target);
     }
@@ -621,12 +754,16 @@ var scrollLock = _objectSpread({
   enablePageScroll: enablePageScroll,
   getScrollState: getScrollState,
   clearQueueScrollLocks: clearQueueScrollLocks,
+  getTargetScrollBarWidth: scroll_lock_getTargetScrollBarWidth,
+  getCurrentTargetScrollBarWidth: scroll_lock_getCurrentTargetScrollBarWidth,
   getPageScrollBarWidth: getPageScrollBarWidth,
   getCurrentPageScrollBarWidth: getCurrentPageScrollBarWidth,
   addScrollableSelector: scroll_lock_addScrollableSelector,
   removeScrollableSelector: scroll_lock_removeScrollableSelector,
   addScrollableTarget: scroll_lock_addScrollableTarget,
   removeScrollableTarget: scroll_lock_removeScrollableTarget,
+  addLockableSelector: scroll_lock_addLockableSelector,
+  addLockableTarget: scroll_lock_addLockableTarget,
   addFillGapSelector: scroll_lock_addFillGapSelector,
   removeFillGapSelector: scroll_lock_removeFillGapSelector,
   addFillGapTarget: scroll_lock_addFillGapTarget,
