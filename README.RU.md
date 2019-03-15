@@ -21,7 +21,7 @@
 ```shell
 npm install scroll-lock
 # или
-yarn install scroll-lock
+yarn add scroll-lock
 ```
 ```js
 //es6 import
