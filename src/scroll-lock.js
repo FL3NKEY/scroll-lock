@@ -450,12 +450,16 @@ const onTouchEnd = (e) => {
 	}
 };
 
-window.addEventListener('resize', onResize);
-document.addEventListener('touchstart', onTouchStart);
-document.addEventListener('touchmove', onTouchMove, {
-	passive: false
-});
-document.addEventListener('touchend', onTouchEnd);
+if (typeof window !== 'undefined') {
+	window.addEventListener('resize', onResize);
+}
+if (typeof document !== 'undefined') {
+	document.addEventListener('touchstart', onTouchStart);
+	document.addEventListener('touchmove', onTouchMove, {
+		passive: false
+	});
+	document.addEventListener('touchend', onTouchEnd);
+}
 
 const deprecatedMethods = {
 	hide(target) {

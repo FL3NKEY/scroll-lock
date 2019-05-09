@@ -28,7 +28,8 @@ webpack_config.output = {
 	filename: '[name].js',
 	library: 'scrollLock',
 	libraryTarget: 'umd',
-	libraryExport: 'default'
+	libraryExport: 'default',
+	globalObject: 'this'
 };
 
 webpack_config.plugins.push(
