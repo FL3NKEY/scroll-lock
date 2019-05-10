@@ -1,6 +1,6 @@
 {
 	"name": "scroll-lock",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "A Javascript utility library for the native scrollbar. Also preventing scroll in iOS and another touch devices.",
 	"main": "dist/scroll-lock.js",
 	"scripts": {
