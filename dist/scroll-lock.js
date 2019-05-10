@@ -7,7 +7,7 @@
 		exports["scrollLock"] = factory();
 	else
 		root["scrollLock"] = factory();
-})(window, function() {
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -695,12 +695,18 @@ var onTouchEnd = function onTouchEnd(e) {
   }
 };
 
-window.addEventListener('resize', onResize);
-document.addEventListener('touchstart', onTouchStart);
-document.addEventListener('touchmove', scroll_lock_onTouchMove, {
-  passive: false
-});
-document.addEventListener('touchend', onTouchEnd);
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', onResize);
+}
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('touchstart', onTouchStart);
+  document.addEventListener('touchmove', scroll_lock_onTouchMove, {
+    passive: false
+  });
+  document.addEventListener('touchend', onTouchEnd);
+}
+
 var deprecatedMethods = {
   hide: function hide(target) {
     throwError('"hide" is deprecated! Use "disablePageScroll" instead. \n https://github.com/FL3NKEY/scroll-lock#disablepagescrollscrollabletarget');
