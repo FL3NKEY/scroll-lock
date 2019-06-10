@@ -1,11 +1,11 @@
 var eachNode = function(nodeList, callback) {
-	if (nodeList && callback) {
-		for (let i = 0; i < nodeList.length; i++) {
-			if (callback(nodeList[i], i, nodeList.length) === true) {
-				break;
-			}
-		}
-	}
+    if (nodeList && callback) {
+        for (let i = 0; i < nodeList.length; i++) {
+            if (callback(nodeList[i], i, nodeList.length) === true) {
+                break;
+            }
+        }
+    }
 };
 
 var $modal = document.querySelector('.js-modal');
@@ -21,21 +21,21 @@ var $navbarFillGap = document.querySelectorAll('.js-navbar-fill-gap');
 scrollLock.addFillGapTarget($navbarFillGap);
 
 function openModal() {
-	$modalBackdoor.style.display = 'block';
-	$modal.style.display = 'block';
-	scrollLock.disablePageScroll($modalScroll);
+    $modalBackdoor.style.display = 'block';
+    $modal.style.display = 'block';
+    scrollLock.disablePageScroll($modalScroll);
 }
 
 function closeModal() {
-	$modalBackdoor.style.display = '';
-	$modal.style.display = '';
-	scrollLock.enablePageScroll($modalScroll);
+    $modalBackdoor.style.display = '';
+    $modal.style.display = '';
+    scrollLock.enablePageScroll($modalScroll);
 }
 
 eachNode($openModalButtons, function($el) {
-	$el.addEventListener('click', openModal);
+    $el.addEventListener('click', openModal);
 });
 
 eachNode($closeModalButtons, function($el) {
-	$el.addEventListener('click', closeModal);
+    $el.addEventListener('click', closeModal);
 });

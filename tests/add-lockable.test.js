@@ -1,19 +1,19 @@
 const scrollLock = require('../dist/scroll-lock');
 
 test('add lockable selector', () => {
-	const initialLockableSelectors = JSON.parse(JSON.stringify(scrollLock._state.lockableSelectors));
-	scrollLock.addLockableSelector('.lockable-selector');
-	initialLockableSelectors.push('.lockable-selector');
-	expect(scrollLock._state.lockableSelectors).toEqual(initialLockableSelectors);
+    const initialLockableSelectors = JSON.parse(JSON.stringify(scrollLock._state.lockableSelectors));
+    scrollLock.addLockableSelector('.lockable-selector');
+    initialLockableSelectors.push('.lockable-selector');
+    expect(scrollLock._state.lockableSelectors).toEqual(initialLockableSelectors);
 
-	scrollLock.addLockableSelector(['.lockable-selector-1', '.lockable-selector-2']);
-	initialLockableSelectors.push('.lockable-selector-1');
-	initialLockableSelectors.push('.lockable-selector-2');
-	expect(scrollLock._state.lockableSelectors).toEqual(initialLockableSelectors);
+    scrollLock.addLockableSelector(['.lockable-selector-1', '.lockable-selector-2']);
+    initialLockableSelectors.push('.lockable-selector-1');
+    initialLockableSelectors.push('.lockable-selector-2');
+    expect(scrollLock._state.lockableSelectors).toEqual(initialLockableSelectors);
 });
 
 test('add lockable target', () => {
-	document.body.innerHTML = `
+    document.body.innerHTML = `
 		<div id="lockable-target"></div>
 		
 		<div class="lockable-target"></div>
@@ -21,17 +21,17 @@ test('add lockable target', () => {
 		<div class="lockable-target"></div>
 	`;
 
-	const $lockableTarget = document.querySelector('#lockable-target');
-	expect($lockableTarget.dataset.scrollLockLockable).toBe(undefined);
-	scrollLock.addLockableTarget($lockableTarget);
-	expect($lockableTarget.dataset.scrollLockLockable).toBe('');
+    const $lockableTarget = document.querySelector('#lockable-target');
+    expect($lockableTarget.dataset.scrollLockLockable).toBe(undefined);
+    scrollLock.addLockableTarget($lockableTarget);
+    expect($lockableTarget.dataset.scrollLockLockable).toBe('');
 
-	const $lockableTargets = document.querySelectorAll('.lockable-target');
-	for (let i = 0; i < $lockableTargets.length; i++) {
-		expect($lockableTargets[i].dataset.scrollLockLockable).toBe(undefined);
-	}
-	scrollLock.addLockableTarget($lockableTargets);
-	for (let i = 0; i < $lockableTargets.length; i++) {
-		expect($lockableTargets[i].dataset.scrollLockLockable).toBe('');
-	}
+    const $lockableTargets = document.querySelectorAll('.lockable-target');
+    for (let i = 0; i < $lockableTargets.length; i++) {
+        expect($lockableTargets[i].dataset.scrollLockLockable).toBe(undefined);
+    }
+    scrollLock.addLockableTarget($lockableTargets);
+    for (let i = 0; i < $lockableTargets.length; i++) {
+        expect($lockableTargets[i].dataset.scrollLockLockable).toBe('');
+    }
 });
