@@ -1,7 +1,7 @@
 {
     "name": "scroll-lock",
     "version": "2.1.1",
-    "description": "A Javascript utility library for the native scrollbar. Also preventing scroll in iOS and another touch devices.",
+    "description": "Cross-browser JavaScript library to disable scrolling page.",
     "main": "dist/scroll-lock.js",
     "scripts": {
         "dev": "cross-env NODE_ENV=development webpack",
