@@ -113,8 +113,9 @@ disablePageScroll($scrollableElement);</code></pre>
             </div>
 
             <div class="uk-section" id="ex-inputs">
-                <h2>Textarea and contenteditable example</h2>
-                <p>If <code>textarea</code> or <code>contenteditable</code> is nested in a scrollable element, they will
+                <h2>Textarea, contenteditable or range example</h2>
+                <p>If <code>textarea</code>, <code>contenteditable</code> <code>range</code> is nested in a scrollable
+                    element, they will
                     also
                     scroll.</p>
                 <ul class="uk-margin-medium-top" uk-tab uk-switcher>
@@ -129,6 +130,8 @@ disablePageScroll($scrollableElement);</code></pre>
                     <div>
                         <p class="uk-text-meta">scrollable element:</p>
                         <div class="uk-panel uk-panel-scrollable" data-scroll-lock-scrollable>
+                            <p>range</p>
+                            <input type="range">
                             <p class="uk-text-meta">textarea</p>
                             <textarea class="uk-textarea"
                                 rows="3">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</textarea>

@@ -91,3 +91,7 @@ export const elementIsScrollableField = ($el) => {
     const selector = 'textarea, [contenteditable="true"]';
     return elementHasSelector($el, selector);
 };
+export const elementIsInputRange = ($el) => {
+    const selector = 'input[type="range"]';
+    return elementHasSelector($el, selector);
+};

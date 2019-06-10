@@ -10,7 +10,8 @@ import {
     elementScrollLeftOnStart,
     elementScrollLeftOnEnd,
     elementIsScrollableField,
-    elementHasSelector
+    elementHasSelector,
+    elementIsInputRange
 } from './tools';
 
 const FILL_GAP_AVAILABLE_METHODS = ['padding', 'margin', 'width', 'max-width', 'none'];
@@ -396,6 +397,10 @@ const onTouchMove = (e) => {
             const handle = ($el, skip = false) => {
                 if ($el) {
                     const parentScrollableEl = findParentBySelector($el, selector, false);
+                    if (elementIsInputRange($el)) {
+                        return false;
+                    }
+
                     if (
                         skip ||
                         ((elementIsScrollableField($el) && findParentBySelector($el, selector)) ||

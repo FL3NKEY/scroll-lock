@@ -212,6 +212,10 @@ var elementIsScrollableField = function elementIsScrollableField($el) {
   var selector = 'textarea, [contenteditable="true"]';
   return elementHasSelector($el, selector);
 };
+var elementIsInputRange = function elementIsInputRange($el) {
+  var selector = 'input[type="range"]';
+  return elementHasSelector($el, selector);
+};
 // CONCATENATED MODULE: ./src/scroll-lock.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "disablePageScroll", function() { return disablePageScroll; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "enablePageScroll", function() { return enablePageScroll; });
@@ -652,6 +656,10 @@ var scroll_lock_onTouchMove = function onTouchMove(e) {
 
         if ($el) {
           var parentScrollableEl = findParentBySelector($el, selector, false);
+
+          if (elementIsInputRange($el)) {
+            return false;
+          }
 
           if (skip || elementIsScrollableField($el) && findParentBySelector($el, selector) || elementHasSelector($el, selector)) {
             var prevent = false;
