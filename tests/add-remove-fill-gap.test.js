@@ -117,3 +117,12 @@ test('remove fill gap target', () => {
         expect($fillGapTargets[i].dataset.scrollLockFilledGap).toBe(undefined);
     }
 });
+
+test('confirm you can not add duplicate selectors', () => {
+    scrollLock.disablePageScroll();
+    const initialFillGapSelectors = JSON.parse(JSON.stringify(scrollLock._state.fillGapSelectors));
+    scrollLock.addFillGapSelector('.duplicate-gap-selector');
+    scrollLock.addFillGapSelector('.duplicate-gap-selector');
+    initialFillGapSelectors.push('.duplicate-gap-selector');
+    expect(scrollLock._state.fillGapSelectors).toEqual(initialFillGapSelectors);
+});

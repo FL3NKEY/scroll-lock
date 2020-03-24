@@ -462,10 +462,12 @@ var scroll_lock_addFillGapSelector = function addFillGapSelector(selector) {
   if (selector) {
     var selectors = argumentAsArray(selector);
     selectors.map(function (selector) {
-      state.fillGapSelectors.push(selector);
+      if (state.fillGapSelectors.indexOf(selector) === -1) {
+        state.fillGapSelectors.push(selector);
 
-      if (!state.scroll) {
-        scroll_lock_fillGapSelector(selector);
+        if (!state.scroll) {
+          scroll_lock_fillGapSelector(selector);
+        }
       }
     });
   }

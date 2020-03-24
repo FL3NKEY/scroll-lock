@@ -224,9 +224,11 @@ export const addFillGapSelector = (selector) => {
     if (selector) {
         const selectors = argumentAsArray(selector);
         selectors.map((selector) => {
-            state.fillGapSelectors.push(selector);
-            if (!state.scroll) {
-                fillGapSelector(selector);
+            if(state.fillGapSelectors.indexOf(selector) === -1) {
+                state.fillGapSelectors.push(selector);
+                if (!state.scroll) {
+                    fillGapSelector(selector);
+                }
             }
         });
     }
