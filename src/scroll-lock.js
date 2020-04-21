@@ -11,7 +11,7 @@ import {
     elementScrollLeftOnEnd,
     elementIsScrollableField,
     elementHasSelector,
-    elementIsInputRange
+    elementIsInputRange,
 } from './tools';
 
 const FILL_GAP_AVAILABLE_METHODS = ['padding', 'margin', 'width', 'max-width', 'none'];
@@ -26,7 +26,7 @@ const state = {
     fillGapMethod: FILL_GAP_AVAILABLE_METHODS[0],
     //
     startTouchY: 0,
-    startTouchX: 0
+    startTouchX: 0,
 };
 
 export const disablePageScroll = (target) => {
@@ -60,7 +60,7 @@ export const getTargetScrollBarWidth = ($target, onlyExists = false) => {
         const currentOverflowYProperty = $target.style.overflowY;
         if (onlyExists) {
             if (!getScrollState()) {
-                $target.style.overflowY = $target.dataset.scrollLockSavedOverflowYProperty;
+                $target.style.overflowY = $target.getAttribute('data-scroll-lock-saved-overflow-y-property');
             }
         } else {
             $target.style.overflowY = 'scroll';
@@ -108,7 +108,7 @@ export const addScrollableTarget = (target) => {
         targets.map(($targets) => {
             eachNode($targets, ($target) => {
                 if (isElement($target)) {
-                    $target.dataset.scrollLockScrollable = '';
+                    $target.setAttribute('data-scroll-lock-scrollable', '');
                 } else {
                     throwError(`"${$target}" is not a Element.`);
                 }
@@ -122,7 +122,7 @@ export const removeScrollableTarget = (target) => {
         targets.map(($targets) => {
             eachNode($targets, ($target) => {
                 if (isElement($target)) {
-                    $target.removeAttribute('data-scrollLockScrollable');
+                    $target.removeAttribute('data-scroll-lock-scrollable');
                 } else {
                     throwError(`"${$target}" is not a Element.`);
                 }
@@ -152,7 +152,7 @@ export const addLockableTarget = (target) => {
         targets.map(($targets) => {
             eachNode($targets, ($target) => {
                 if (isElement($target)) {
-                    $target.dataset.scrollLockLockable = '';
+                    $target.setAttribute('data-scroll-lock-lockable', '');
                 } else {
                     throwError(`"${$target}" is not a Element.`);
                 }
@@ -192,7 +192,7 @@ export const addFillGapTarget = (target) => {
         targets.map(($targets) => {
             eachNode($targets, ($target) => {
                 if (isElement($target)) {
-                    $target.dataset.scrollLockFillGap = '';
+                    $target.setAttribute('data-scroll-lock-fill-gap', '');
                     if (!state.scroll) {
                         fillGapTarget($target);
                     }
@@ -209,7 +209,7 @@ export const removeFillGapTarget = (target) => {
         targets.map(($targets) => {
             eachNode($targets, ($target) => {
                 if (isElement($target)) {
-                    $target.removeAttribute('data-scrollLockFillGap');
+                    $target.removeAttribute('data-scroll-lock-fill-gap');
                     if (!state.scroll) {
                         unfillGapTarget($target);
                     }
@@ -224,7 +224,7 @@ export const addFillGapSelector = (selector) => {
     if (selector) {
         const selectors = argumentAsArray(selector);
         selectors.map((selector) => {
-            if(state.fillGapSelectors.indexOf(selector) === -1) {
+            if (state.fillGapSelectors.indexOf(selector) === -1) {
                 state.fillGapSelectors.push(selector);
                 if (!state.scroll) {
                     fillGapSelector(selector);
@@ -272,24 +272,25 @@ const showLockableOverflowSelector = (selector) => {
     });
 };
 const hideLockableOverflowTarget = ($target) => {
-    if (isElement($target) && $target.dataset.scrollLockLocked !== 'true') {
+    if (isElement($target) && $target.getAttribute('data-scroll-lock-locked') !== 'true') {
         const computedStyle = window.getComputedStyle($target);
-        $target.dataset.scrollLockSavedOverflowYProperty = computedStyle.overflowY;
-        $target.dataset.scrollLockSavedInlineOverflowProperty = $target.style.overflow;
-        $target.dataset.scrollLockSavedInlineOverflowYProperty = $target.style.overflowY;
+        $target.setAttribute('data-scroll-lock-saved-overflow-y-property', computedStyle.overflowY);
+        $target.setAttribute('data-scroll-lock-saved-inline-overflow-property', $target.style.overflow);
+        $target.setAttribute('data-scroll-lock-saved-inline-overflow-y-property', $target.style.overflowY);
+
         $target.style.overflow = 'hidden';
-        $target.dataset.scrollLockLocked = 'true';
+        $target.setAttribute('data-scroll-lock-locked', 'true');
     }
 };
 const showLockableOverflowTarget = ($target) => {
-    if (isElement($target) && $target.dataset.scrollLockLocked === 'true') {
-        $target.style.overflow = $target.dataset.scrollLockSavedInlineOverflowProperty;
-        $target.style.overflowY = $target.dataset.scrollLockSavedInlineOverflowYProperty;
-        $target.removeAttribute('data-scrollLockSavedOverflowYProperty');
-        $target.removeAttribute('data-scrollLockSavedInlineOverflowProperty');
-        $target.removeAttribute('data-scrollLockSavedInlineOverflowYProperty');
-        $target.removeAttribute('data-scrollLockLocked');
+    if (isElement($target) && $target.getAttribute('data-scroll-lock-locked') === 'true') {
+        $target.style.overflow = $target.getAttribute('data-scroll-lock-saved-inline-overflow-property');
+        $target.style.overflowY = $target.getAttribute('data-scroll-lock-saved-inline-overflow-y-property');
 
+        $target.removeAttribute('data-scroll-lock-saved-overflow-property');
+        $target.removeAttribute('data-scroll-lock-saved-inline-overflow-property');
+        $target.removeAttribute('data-scroll-lock-saved-inline-overflow-y-property');
+        $target.removeAttribute('data-scroll-lock-locked');
     }
 };
 
@@ -313,20 +314,20 @@ const fillGapSelector = (selector) => {
 const fillGapTarget = ($target, isLockable = false) => {
     if (isElement($target)) {
         let scrollBarWidth;
-        if ($target.dataset.scrollLockLockable === '' || isLockable) {
+        if ($target.getAttribute('data-scroll-lock-lockable') === '' || isLockable) {
             scrollBarWidth = getTargetScrollBarWidth($target, true);
         } else {
             const $lockableParent = findParentBySelector($target, arrayAsSelector(state.lockableSelectors));
             scrollBarWidth = getTargetScrollBarWidth($lockableParent, true);
         }
 
-        if ($target.dataset.scrollLockFilledGap === 'true') {
+        if ($target.getAttribute('data-scroll-lock-filled-gap') === 'true') {
             unfillGapTarget($target);
         }
 
         const computedStyle = window.getComputedStyle($target);
-        $target.dataset.scrollLockFilledGap = 'true';
-        $target.dataset.scrollLockCurrentFillGapMethod = state.fillGapMethod;
+        $target.setAttribute('data-scroll-lock-filled-gap', 'true');
+        $target.setAttribute('data-scroll-lock-current-fill-gap-method', state.fillGapMethod);
 
         if (state.fillGapMethod === 'margin') {
             const currentMargin = parseFloat(computedStyle.marginRight);
@@ -349,11 +350,10 @@ const unfillGapSelector = (selector) => {
 };
 const unfillGapTarget = ($target) => {
     if (isElement($target)) {
-        if ($target.dataset.scrollLockFilledGap === 'true') {
-            const currentFillGapMethod = $target.dataset.scrollLockCurrentFillGapMethod;
-            $target.removeAttribute('data-scrollLockFilledGap');
-            $target.removeAttribute('data-scrollLockCurrentFillGapMethod');
-
+        if ($target.getAttribute('data-scroll-lock-filled-gap') === 'true') {
+            const currentFillGapMethod = $target.getAttribute('data-scroll-lock-current-fill-gap-method');
+            $target.removeAttribute('data-scroll-lock-filled-gap');
+            $target.removeAttribute('data-scroll-lock-current-fill-gap-method');
 
             if (currentFillGapMethod === 'margin') {
                 $target.style.marginRight = ``;
@@ -390,13 +390,13 @@ const onTouchMove = (e) => {
                 up: startTouchY < currentClientY,
                 down: startTouchY > currentClientY,
                 left: startTouchX < currentClientX,
-                right: startTouchX > currentClientX
+                right: startTouchX > currentClientX,
             };
             const directionWithOffset = {
                 up: startTouchY + TOUCH_DIRECTION_DETECT_OFFSET < currentClientY,
                 down: startTouchY - TOUCH_DIRECTION_DETECT_OFFSET > currentClientY,
                 left: startTouchX + TOUCH_DIRECTION_DETECT_OFFSET < currentClientX,
-                right: startTouchX - TOUCH_DIRECTION_DETECT_OFFSET > currentClientX
+                right: startTouchX - TOUCH_DIRECTION_DETECT_OFFSET > currentClientX,
             };
             const handle = ($el, skip = false) => {
                 if ($el) {
@@ -407,8 +407,8 @@ const onTouchMove = (e) => {
 
                     if (
                         skip ||
-                        ((elementIsScrollableField($el) && findParentBySelector($el, selector)) ||
-                            elementHasSelector($el, selector))
+                        (elementIsScrollableField($el) && findParentBySelector($el, selector)) ||
+                        elementHasSelector($el, selector)
                     ) {
                         let prevent = false;
                         if (elementScrollLeftOnStart($el) && elementScrollLeftOnEnd($el)) {
@@ -465,7 +465,7 @@ if (typeof window !== 'undefined') {
 if (typeof document !== 'undefined') {
     document.addEventListener('touchstart', onTouchStart);
     document.addEventListener('touchmove', onTouchMove, {
-        passive: false
+        passive: false,
     });
     document.addEventListener('touchend', onTouchEnd);
 }
@@ -542,7 +542,7 @@ const deprecatedMethods = {
         );
 
         clearQueueScrollLocks();
-    }
+    },
 };
 
 const scrollLock = {
@@ -577,7 +577,7 @@ const scrollLock = {
 
     _state: state,
 
-    ...deprecatedMethods
+    ...deprecatedMethods,
 };
 
 export default scrollLock;

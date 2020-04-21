@@ -22,16 +22,16 @@ test('add lockable target', () => {
 	`;
 
     const $lockableTarget = document.querySelector('#lockable-target');
-    expect($lockableTarget.dataset.scrollLockLockable).toBe(undefined);
+    expect($lockableTarget.getAttribute('data-scroll-lock-lockable')).toBe(null);
     scrollLock.addLockableTarget($lockableTarget);
-    expect($lockableTarget.dataset.scrollLockLockable).toBe('');
+    expect($lockableTarget.getAttribute('data-scroll-lock-lockable')).toBe('');
 
     const $lockableTargets = document.querySelectorAll('.lockable-target');
     for (let i = 0; i < $lockableTargets.length; i++) {
-        expect($lockableTargets[i].dataset.scrollLockLockable).toBe(undefined);
+        expect($lockableTargets[i].getAttribute('data-scroll-lock-lockable')).toBe(null);
     }
     scrollLock.addLockableTarget($lockableTargets);
     for (let i = 0; i < $lockableTargets.length; i++) {
-        expect($lockableTargets[i].dataset.scrollLockLockable).toBe('');
+        expect($lockableTargets[i].getAttribute('data-scroll-lock-lockable')).toBe('');
     }
 });

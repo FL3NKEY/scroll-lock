@@ -10,27 +10,27 @@ test('set fill gap method', () => {
     scrollLock.disablePageScroll();
 
     expect(scrollLock._state.fillGapMethod).toBe('padding');
-    expect($fillGapTarget.dataset.scrollLockCurrentFillGapMethod).toBe('padding');
+    expect($fillGapTarget.getAttribute('data-scroll-lock-current-fill-gap-method')).toBe('padding');
 
     scrollLock.setFillGapMethod('margin');
     expect(scrollLock._state.fillGapMethod).toBe('margin');
-    expect($fillGapTarget.dataset.scrollLockCurrentFillGapMethod).toBe('margin');
+    expect($fillGapTarget.getAttribute('data-scroll-lock-current-fill-gap-method')).toBe('margin');
 
     scrollLock.setFillGapMethod('width');
     expect(scrollLock._state.fillGapMethod).toBe('width');
-    expect($fillGapTarget.dataset.scrollLockCurrentFillGapMethod).toBe('width');
+    expect($fillGapTarget.getAttribute('data-scroll-lock-current-fill-gap-method')).toBe('width');
 
     scrollLock.setFillGapMethod('max-width');
     expect(scrollLock._state.fillGapMethod).toBe('max-width');
-    expect($fillGapTarget.dataset.scrollLockCurrentFillGapMethod).toBe('max-width');
+    expect($fillGapTarget.getAttribute('data-scroll-lock-current-fill-gap-method')).toBe('max-width');
 
     scrollLock.setFillGapMethod('none');
     expect(scrollLock._state.fillGapMethod).toBe('none');
-    expect($fillGapTarget.dataset.scrollLockCurrentFillGapMethod).toBe('none');
+    expect($fillGapTarget.getAttribute('data-scroll-lock-current-fill-gap-method')).toBe('none');
 
     const errorSpy = jest.spyOn(global.console, 'error').mockImplementation(() => {});
     scrollLock.setFillGapMethod('unsupported value');
     expect(errorSpy).toHaveBeenCalled();
     expect(scrollLock._state.fillGapMethod).toBe('none');
-    expect($fillGapTarget.dataset.scrollLockCurrentFillGapMethod).toBe('none');
+    expect($fillGapTarget.getAttribute('data-scroll-lock-current-fill-gap-method')).toBe('none');
 });
