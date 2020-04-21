@@ -122,7 +122,7 @@ export const removeScrollableTarget = (target) => {
         targets.map(($targets) => {
             eachNode($targets, ($target) => {
                 if (isElement($target)) {
-                    delete $target.dataset.scrollLockScrollable;
+                    $target.removeAttribute('data-scrollLockScrollable');
                 } else {
                     throwError(`"${$target}" is not a Element.`);
                 }
@@ -209,7 +209,7 @@ export const removeFillGapTarget = (target) => {
         targets.map(($targets) => {
             eachNode($targets, ($target) => {
                 if (isElement($target)) {
-                    delete $target.dataset.scrollLockFillGap;
+                    $target.removeAttribute('data-scrollLockFillGap');
                     if (!state.scroll) {
                         unfillGapTarget($target);
                     }
@@ -285,10 +285,11 @@ const showLockableOverflowTarget = ($target) => {
     if (isElement($target) && $target.dataset.scrollLockLocked === 'true') {
         $target.style.overflow = $target.dataset.scrollLockSavedInlineOverflowProperty;
         $target.style.overflowY = $target.dataset.scrollLockSavedInlineOverflowYProperty;
-        delete $target.dataset.scrollLockSavedOverflowYProperty;
-        delete $target.dataset.scrollLockSavedInlineOverflowProperty;
-        delete $target.dataset.scrollLockSavedInlineOverflowYProperty;
-        delete $target.dataset.scrollLockLocked;
+        $target.removeAttribute('data-scrollLockSavedOverflowYProperty');
+        $target.removeAttribute('data-scrollLockSavedInlineOverflowProperty');
+        $target.removeAttribute('data-scrollLockSavedInlineOverflowYProperty');
+        $target.removeAttribute('data-scrollLockLocked');
+
     }
 };
 
@@ -350,8 +351,9 @@ const unfillGapTarget = ($target) => {
     if (isElement($target)) {
         if ($target.dataset.scrollLockFilledGap === 'true') {
             const currentFillGapMethod = $target.dataset.scrollLockCurrentFillGapMethod;
-            delete $target.dataset.scrollLockFilledGap;
-            delete $target.dataset.scrollLockCurrentFillGapMethod;
+            $target.removeAttribute('data-scrollLockFilledGap');
+            $target.removeAttribute('data-scrollLockCurrentFillGapMethod');
+
 
             if (currentFillGapMethod === 'margin') {
                 $target.style.marginRight = ``;
