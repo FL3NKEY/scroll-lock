@@ -34,32 +34,32 @@ test('add scrollable target', () => {
     `;
 
     const $scrollableTarget = document.querySelector('#scrollable-target');
-    expect($scrollableTarget.dataset.scrollLockScrollable).toBe(undefined);
+    expect($scrollableTarget.getAttribute('data-scroll-lock-scrollable')).toBe(null);
     scrollLock.addScrollableTarget($scrollableTarget);
-    expect($scrollableTarget.dataset.scrollLockScrollable).toBe('');
+    expect($scrollableTarget.getAttribute('data-scroll-lock-scrollable')).toBe('');
 
     const $scrollableTargets = document.querySelectorAll('.scrollable-target');
     for (let i = 0; i < $scrollableTargets.length; i++) {
-        expect($scrollableTargets[i].dataset.scrollLockScrollable).toBe(undefined);
+        expect($scrollableTargets[i].getAttribute('data-scroll-lock-scrollable')).toBe(null);
     }
     scrollLock.addScrollableTarget($scrollableTargets);
     for (let i = 0; i < $scrollableTargets.length; i++) {
-        expect($scrollableTargets[i].dataset.scrollLockScrollable).toBe('');
+        expect($scrollableTargets[i].getAttribute('data-scroll-lock-scrollable')).toBe('');
     }
 });
 
 test('remove scrollable target', () => {
     const $scrollableTarget = document.querySelector('#scrollable-target');
-    expect($scrollableTarget.dataset.scrollLockScrollable).toBe('');
+    expect($scrollableTarget.getAttribute('data-scroll-lock-scrollable')).toBe('');
     scrollLock.removeScrollableTarget($scrollableTarget);
-    expect($scrollableTarget.dataset.scrollLockScrollable).toBe(undefined);
+    expect($scrollableTarget.getAttribute('data-scroll-lock-scrollable')).toBe(null);
 
     const $scrollableTargets = document.querySelectorAll('.scrollable-target');
     for (let i = 0; i < $scrollableTargets.length; i++) {
-        expect($scrollableTargets[i].dataset.scrollLockScrollable).toBe('');
+        expect($scrollableTargets[i].getAttribute('data-scroll-lock-scrollable')).toBe('');
     }
     scrollLock.removeScrollableTarget($scrollableTargets);
     for (let i = 0; i < $scrollableTargets.length; i++) {
-        expect($scrollableTargets[i].dataset.scrollLockScrollable).toBe(undefined);
+        expect($scrollableTargets[i].getAttribute('data-scroll-lock-scrollable')).toBe(null);
     }
 });
