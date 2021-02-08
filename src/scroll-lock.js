@@ -437,14 +437,18 @@ const onTouchMove = (e) => {
                             if (parentScrollableEl) {
                                 handle(parentScrollableEl, true);
                             } else {
-                                e.preventDefault();
+                                if (e.cancelable) {
+                                    e.preventDefault();
+                                }
                             }
                         }
                     } else {
                         handle(parentScrollableEl);
                     }
                 } else {
-                    e.preventDefault();
+                    if (e.cancelable) {
+                        e.preventDefault();
+                    }
                 }
             };
 
