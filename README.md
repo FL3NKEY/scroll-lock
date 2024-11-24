@@ -1,4 +1,10 @@
 <h1 align="center">
+  DEPRECATED!
+</h1>
+
+<p align="center">Please use the new version: https://github.com/fluejs/noscroll</p>
+
+<h1 align="center">
   scroll-lock
 </h1>
 <p align="center">
